@@ -5,11 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: rocket-lms-app
     restart: unless-stopped
     working_dir: /var/www
-    volumes:
-      - ./:/var/www
     networks:
       - rocket-network
 
@@ -17,9 +14,7 @@ services:
     build:
       context: .
       dockerfile: docker/nginx/Dockerfile
-    container_name: rocket-lms-nginx
     restart: unless-stopped
-    # Ports managed by Coolify (DO NOT ADD "ports: 80:80" HERE)
     networks:
       - rocket-network
     depends_on:
