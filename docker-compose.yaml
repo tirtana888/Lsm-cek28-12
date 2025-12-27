@@ -7,22 +7,17 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     working_dir: /var/www
-    networks:
-      - rocket-network
 
   nginx:
     build:
       context: .
       dockerfile: docker/nginx/Dockerfile
     restart: unless-stopped
-    networks:
-      - rocket-network
     depends_on:
       - app
 
   db:
     image: mysql:8.0
-    container_name: rocket-lms-db
     restart: unless-stopped
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
@@ -31,12 +26,6 @@ services:
       MYSQL_USER: ${DB_USERNAME}
     volumes:
       - rocket-db-data:/var/lib/mysql
-    networks:
-      - rocket-network
-
-networks:
-  rocket-network:
-    driver: bridge
 
 volumes:
   rocket-db-data:
