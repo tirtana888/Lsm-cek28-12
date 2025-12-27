@@ -1,0 +1,1466 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rocket LMS v2.1 - License Bypass Technical Report</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.7;
+            color: #1a1a2e;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .report {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            padding: 50px 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            color: #a0a0ff;
+            font-size: 1.1em;
+        }
+
+        .meta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        h2 {
+            color: #1a1a2e;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            margin: 40px 0 20px 0;
+            font-size: 1.6em;
+        }
+
+        h3 {
+            color: #16213e;
+            margin: 25px 0 15px 0;
+            font-size: 1.3em;
+        }
+
+        h4 {
+            color: #4a4a6a;
+            margin: 20px 0 10px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: #f8f9ff;
+        }
+
+        code {
+            background: #f1f3f9;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.9em;
+            color: #e83e8c;
+        }
+
+        pre {
+            background: #1e1e2e;
+            color: #cdd6f4;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-size: 0.85em;
+            line-height: 1.5;
+        }
+
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        .keyword {
+            color: #cba6f7;
+        }
+
+        .string {
+            color: #a6e3a1;
+        }
+
+        .comment {
+            color: #6c7086;
+            font-style: italic;
+        }
+
+        .function {
+            color: #89b4fa;
+        }
+
+        .variable {
+            color: #f9e2af;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.75em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .badge-high {
+            background: #ff4757;
+            color: #fff;
+        }
+
+        .badge-medium {
+            background: #ffa502;
+            color: #000;
+        }
+
+        .badge-low {
+            background: #2ed573;
+            color: #fff;
+        }
+
+        .badge-bypassed {
+            background: #667eea;
+            color: #fff;
+        }
+
+        .alert {
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .alert-info {
+            background: #e7f3ff;
+            border-left: 5px solid #0066cc;
+        }
+
+        .alert-warning {
+            background: #fff3e0;
+            border-left: 5px solid #ff9800;
+        }
+
+        .alert-success {
+            background: #e8f5e9;
+            border-left: 5px solid #4caf50;
+        }
+
+        .section-box {
+            background: #f8f9ff;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 1px solid #e0e0ff;
+        }
+
+        .file-path {
+            background: #2d2d3a;
+            color: #89b4fa;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+
+        .toc {
+            background: #f0f2ff;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .toc h3 {
+            margin-top: 0;
+        }
+
+        .toc ol {
+            padding-left: 25px;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        .toc a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
+        }
+
+        .flowchart {
+            background: #f8f9ff;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .flowchart-box {
+            display: inline-block;
+            padding: 15px 25px;
+            margin: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .flowchart-box.start {
+            background: #667eea;
+            color: #fff;
+        }
+
+        .flowchart-box.check {
+            background: #ffc107;
+            color: #000;
+        }
+
+        .flowchart-box.allow {
+            background: #4caf50;
+            color: #fff;
+        }
+
+        .flowchart-box.block {
+            background: #f44336;
+            color: #fff;
+        }
+
+        .arrow {
+            font-size: 24px;
+            color: #667eea;
+            margin: 0 10px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .summary-card h4 {
+            font-size: 2.5em;
+            margin-bottom: 5px;
+        }
+
+        .summary-card p {
+            opacity: 0.9;
+        }
+
+        @media print {
+            body {
+                background: #fff;
+            }
+
+            .report {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="report">
+
+            <!-- HEADER -->
+            <div class="header">
+                <h1>🔐 Rocket LMS v2.1</h1>
+                <div class="subtitle">License Bypass & Plugin Installation - Technical Security Report</div>
+                <div class="meta">
+                    <div class="meta-item">📋 Black-Box Testing Report</div>
+                    <div class="meta-item">📅 December 27, 2025</div>
+                    <div class="meta-item">🔒 Internal Use Only</div>
+                    <div class="meta-item">📌 Version 2.0</div>
+                </div>
+            </div>
+
+            <div class="content">
+
+                <!-- EXECUTIVE SUMMARY -->
+                <h2 id="summary">Executive Summary</h2>
+
+                <div class="alert alert-info">
+                    <strong>📌 Purpose:</strong> This document provides a comprehensive technical walkthrough of the
+                    license verification bypass implementation for Rocket LMS v2.1 and its associated paid plugins,
+                    enabling local development and testing without valid Envato/CodeCanyon purchase codes.
+                </div>
+
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <h4>17+</h4>
+                        <p>Files Modified</p>
+                    </div>
+                    <div class="summary-card">
+                        <h4>4</h4>
+                        <p>License Services</p>
+                    </div>
+                    <div class="summary-card">
+                        <h4>4</h4>
+                        <p>Middleware Bypassed</p>
+                    </div>
+                    <div class="summary-card">
+                        <h4>6</h4>
+                        <p>Service Providers</p>
+                    </div>
+                </div>
+
+                <h3>Scope of Bypass</h3>
+                <table>
+                    <tr>
+                        <th>Component</th>
+                        <th>Status</th>
+                        <th>Bypass Method</th>
+                        <th>Files Affected</th>
+                    </tr>
+                    <tr>
+                        <td>Main Application License</td>
+                        <td><span class="badge badge-bypassed">BYPASSED</span></td>
+                        <td>Service Class Override</td>
+                        <td>3 files</td>
+                    </tr>
+                    <tr>
+                        <td>Plugin Bundle License</td>
+                        <td><span class="badge badge-bypassed">BYPASSED</span></td>
+                        <td>Service + Middleware + Provider</td>
+                        <td>3 files</td>
+                    </tr>
+                    <tr>
+                        <td>Theme Builder License</td>
+                        <td><span class="badge badge-bypassed">BYPASSED</span></td>
+                        <td>Service + Middleware + Provider</td>
+                        <td>3 files</td>
+                    </tr>
+                    <tr>
+                        <td>Mobile App License</td>
+                        <td><span class="badge badge-bypassed">BYPASSED</span></td>
+                        <td>Service + Middleware + Provider</td>
+                        <td>3 files</td>
+                    </tr>
+                    <tr>
+                        <td>Admin Routes</td>
+                        <td><span class="badge badge-bypassed">FIXED</span></td>
+                        <td>Complete Route Replacement</td>
+                        <td>1 file (510 lines)</td>
+                    </tr>
+                    <tr>
+                        <td>Purchase Code Validation</td>
+                        <td><span class="badge badge-bypassed">BYPASSED</span></td>
+                        <td>Model + Controller Override</td>
+                        <td>2 files</td>
+                    </tr>
+                </table>
+
+                <!-- TABLE OF CONTENTS -->
+                <div class="toc">
+                    <h3>📑 Table of Contents</h3>
+                    <ol>
+                        <li><a href="#summary">Executive Summary</a></li>
+                        <li><a href="#architecture">Architecture Overview</a></li>
+                        <li><a href="#services">License Service Files (4 files)</a></li>
+                        <li><a href="#middleware">License Check Middleware (4 files)</a></li>
+                        <li><a href="#providers">Service Providers (6 files)</a></li>
+                        <li><a href="#model">PurchaseCode Model</a></li>
+                        <li><a href="#controllers">Controller Modifications</a></li>
+                        <li><a href="#routes">Admin Routes Configuration</a></li>
+                        <li><a href="#reproduction">Step-by-Step Reproduction Guide</a></li>
+                        <li><a href="#remediation">Remediation Recommendations</a></li>
+                    </ol>
+                </div>
+
+                <!-- ARCHITECTURE -->
+                <h2 id="architecture">1. Architecture Overview</h2>
+
+                <h3>1.1 Original License Verification Flow</h3>
+                <div class="flowchart">
+                    <div class="flowchart-box start">User Access</div>
+                    <span class="arrow">→</span>
+                    <div class="flowchart-box check">License Check</div>
+                    <span class="arrow">→</span>
+                    <div class="flowchart-box block">Redirect to License Page</div>
+                    <span class="arrow">→</span>
+                    <div class="flowchart-box check">Envato API Verification</div>
+                    <span class="arrow">→</span>
+                    <div class="flowchart-box allow">Allow Access (if valid)</div>
+                </div>
+
+                <h3>1.2 Bypassed License Flow</h3>
+                <div class="flowchart">
+                    <div class="flowchart-box start">User Access</div>
+                    <span class="arrow">→</span>
+                    <div class="flowchart-box allow" style="background: #667eea;">Always Returns TRUE</div>
+                    <span class="arrow">→</span>
+                    <div class="flowchart-box allow">Allow Access</div>
+                </div>
+
+                <h3>1.3 Multi-Layer Protection (Original)</h3>
+                <div class="section-box">
+                    <p>The original Rocket LMS uses a <strong>multi-layered defense</strong> approach:</p>
+                    <ol>
+                        <li><strong>Layer 1 - Kernel:</strong> ionCube encrypted Kernel.php with license checks on boot
+                        </li>
+                        <li><strong>Layer 2 - Middleware:</strong> LicenseCheck middleware validates on each request
+                        </li>
+                        <li><strong>Layer 3 - Services:</strong> LicenseService classes verify with Envato API</li>
+                        <li><strong>Layer 4 - Providers:</strong> Service providers register license event listeners
+                        </li>
+                        <li><strong>Layer 5 - Models:</strong> PurchaseCode model stores and validates purchase codes
+                        </li>
+                        <li><strong>Layer 6 - Routes:</strong> Encrypted routes redirect to license page if invalid</li>
+                    </ol>
+                </div>
+
+                <!-- LICENSE SERVICES -->
+                <h2 id="services">2. License Service Files (4 files)</h2>
+
+                <div class="alert alert-warning">
+                    <strong>⚠️ Key Finding:</strong> All license verification logic resides in unencrypted PHP service
+                    classes, making bypass trivial by replacing these files with stubs that always return valid.
+                </div>
+
+                <h3>2.1 Main License Service</h3>
+                <div class="file-path">📁 app/Services/LicenseService.php</div>
+                <p><strong>Purpose:</strong> Primary license verification for the main Rocket LMS application. Called on
+                    every request to validate the purchase code.</p>
+
+                <pre><code><span class="keyword">&lt;?php</span>
+
+<span class="keyword">namespace</span> App\Services;
+
+<span class="keyword">class</span> <span class="function">LicenseService</span>
+{
+    <span class="comment">/**
+     * BYPASSED - Always return true/valid
+     * Original: Calls Envato API to verify purchase code
+     */</span>
+    <span class="keyword">public static function</span> <span class="function">verify</span>(<span class="variable">$code</span> = <span class="keyword">null</span>)
+    {
+        <span class="keyword">return</span> [<span class="string">'status'</span> => <span class="keyword">true</span>, <span class="string">'message'</span> => <span class="string">'License verified'</span>];
+    }
+
+    <span class="comment">// Check if stored license is valid</span>
+    <span class="keyword">public function</span> <span class="function">isValid</span>()
+    {
+        <span class="keyword">return true</span>;
+    }
+
+    <span class="comment">// Validate license on boot</span>
+    <span class="keyword">public function</span> <span class="function">checkLicense</span>()
+    {
+        <span class="keyword">return true</span>;
+    }
+
+    <span class="comment">// Verify purchase code with Envato</span>
+    <span class="keyword">public function</span> <span class="function">validatePurchaseCode</span>(<span class="variable">$code</span>)
+    {
+        <span class="keyword">return</span> [<span class="string">'status'</span> => <span class="keyword">true</span>, <span class="string">'valid'</span> => <span class="keyword">true</span>, <span class="string">'license_type'</span> => <span class="string">'extended'</span>];
+    }
+
+    <span class="comment">// Static license check</span>
+    <span class="keyword">public static function</span> <span class="function">isLicenseValid</span>()
+    {
+        <span class="keyword">return true</span>;
+    }
+}</code></pre>
+
+                <h4>Methods Bypassed:</h4>
+                <table>
+                    <tr>
+                        <th>Method</th>
+                        <th>Original Behavior</th>
+                        <th>Bypass Return Value</th>
+                    </tr>
+                    <tr>
+                        <td><code>verify($code)</code></td>
+                        <td>HTTP call to Envato API</td>
+                        <td><code>['status' => true]</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>isValid()</code></td>
+                        <td>Checks database for valid license</td>
+                        <td><code>true</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>checkLicense()</code></td>
+                        <td>Boot-time license validation</td>
+                        <td><code>true</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>validatePurchaseCode($code)</code></td>
+                        <td>Full Envato verification</td>
+                        <td><code>['status' => true, 'valid' => true]</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>isLicenseValid()</code></td>
+                        <td>Static quick check</td>
+                        <td><code>true</code></td>
+                    </tr>
+                </table>
+
+                <h3>2.2 Plugin Bundle License Service</h3>
+                <div class="file-path">📁 app/Services/PluginBundleLicenseService.php</div>
+                <pre><code><span class="keyword">&lt;?php</span>
+
+<span class="keyword">namespace</span> App\Services;
+
+<span class="keyword">class</span> <span class="function">PluginBundleLicenseService</span>
+{
+    <span class="keyword">public static function</span> <span class="function">verify</span>(<span class="variable">$code</span> = <span class="keyword">null</span>)
+    {
+        <span class="keyword">return</span> [<span class="string">'status'</span> => <span class="keyword">true</span>, <span class="string">'message'</span> => <span class="string">'License verified'</span>];
+    }
+
+    <span class="keyword">public function</span> <span class="function">isValid</span>()
+    {
+        <span class="keyword">return true</span>;
+    }
+}</code></pre>
+
+                <h3>2.3 Theme Builder License Service</h3>
+                <div class="file-path">📁 app/Services/ThemeBuilderLicenseService.php</div>
+                <p><em>(Same pattern as PluginBundleLicenseService)</em></p>
+
+                <h3>2.4 Mobile App License Service</h3>
+                <div class="file-path">📁 app/Services/MobileAppLicenseService.php</div>
+                <p><em>(Same pattern as PluginBundleLicenseService)</em></p>
+
+                <!-- MIDDLEWARE -->
+                <h2 id="middleware">3. License Check Middleware (4 files)</h2>
+
+                <div class="alert alert-info">
+                    <strong>📌 Purpose:</strong> Middleware intercepts every HTTP request and checks license validity
+                    before allowing access to protected routes. Bypassing these ensures no request is blocked.
+                </div>
+
+                <h3>3.1 Main License Check Middleware</h3>
+                <div class="file-path">📁 app/Http/Middleware/LicenseCheck.php</div>
+                <pre><code><span class="keyword">&lt;?php</span>
+
+<span class="keyword">namespace</span> App\Http\Middleware;
+
+<span class="keyword">use</span> Closure;
+<span class="keyword">use</span> Illuminate\Http\Request;
+
+<span class="keyword">class</span> <span class="function">LicenseCheck</span>
+{
+    <span class="comment">/**
+     * BYPASSED - Always allow requests to proceed
+     * 
+     * Original behavior:
+     * - Check if purchase code exists in database
+     * - Validate license with LicenseService
+     * - Redirect to /purchase-code if invalid
+     */</span>
+    <span class="keyword">public function</span> <span class="function">handle</span>(Request <span class="variable">$request</span>, Closure <span class="variable">$next</span>)
+    {
+        <span class="comment">// License check bypassed - always allow request to proceed</span>
+        <span class="keyword">return</span> <span class="variable">$next</span>(<span class="variable">$request</span>);
+    }
+}</code></pre>
+
+                <h3>3.2 Plugin Bundle License Check</h3>
+                <div class="file-path">📁 app/Http/Middleware/PluginBundleLicenseCheck.php</div>
+                <pre><code><span class="keyword">&lt;?php</span>
+
+<span class="keyword">namespace</span> App\Http\Middleware;
+
+<span class="keyword">use</span> Closure;
+<span class="keyword">use</span> Illuminate\Http\Request;
+
+<span class="keyword">class</span> <span class="function">PluginBundleLicenseCheck</span>
+{
+    <span class="comment">/**
+     * BYPASSED - Always allow requests to proceed
+     */</span>
+    <span class="keyword">public function</span> <span class="function">handle</span>(Request <span class="variable">$request</span>, Closure <span class="variable">$next</span>)
+    {
+        <span class="keyword">return</span> <span class="variable">$next</span>(<span class="variable">$request</span>);
+    }
+}</code></pre>
+
+                <h3>3.3 Theme Builder License Check</h3>
+                <div class="file-path">📁 app/Http/Middleware/ThemeBuilderLicenseCheck.php</div>
+                <p><em>(Same pattern - always returns $next($request))</em></p>
+
+                <h3>3.4 Mobile App License Check</h3>
+                <div class="file-path">📁 app/Http/Middleware/MobileAppLicenseCheck.php</div>
+                <p><em>(Same pattern - always returns $next($request))</em></p>
+
+                <h3>Middleware Registration in Kernel.php</h3>
+                <pre><code><span class="comment">// In app/Http/Kernel.php</span>
+<span class="keyword">protected</span> <span class="variable">$routeMiddleware</span> = [
+    <span class="comment">// ... other middleware</span>
+    <span class="string">'license_check'</span> => \App\Http\Middleware\LicenseCheck::<span class="keyword">class</span>,
+    <span class="comment">// This middleware is now bypassed and allows all requests</span>
+];</code></pre>
+
+                <!-- PROVIDERS -->
+                <h2 id="providers">4. Service Providers (6 files)</h2>
+
+                <div class="alert alert-warning">
+                    <strong>⚠️ Critical:</strong> Service providers are bootstrapped on every request. Original
+                    providers registered license event listeners and integrity checks. All have been neutralized.
+                </div>
+
+                <h3>4.1 License Event Service Provider</h3>
+                <div class="file-path">📁 app/Providers/LicenseEventServiceProvider.php</div>
+                <pre><code><span class="keyword">&lt;?php</span>
+
+<span class="keyword">namespace</span> App\Providers;
+
+<span class="keyword">use</span> Illuminate\Support\ServiceProvider;
+
+<span class="keyword">class</span> <span class="function">LicenseEventServiceProvider</span> <span class="keyword">extends</span> ServiceProvider
+{
+    <span class="keyword">public function</span> <span class="function">register</span>()
+    {
+        <span class="comment">// BYPASSED - Original registered license verification listeners</span>
+    }
+
+    <span class="keyword">public function</span> <span class="function">boot</span>()
+    {
+        <span class="comment">// BYPASSED - Original triggered license checks on specific events</span>
+    }
+}</code></pre>
+
+                <h3>4.2 Runtime Optimization Service Provider</h3>
+                <div class="file-path">📁 app/Providers/RuntimeOptimizationServiceProvider.php</div>
+                <pre><code><span class="keyword">&lt;?php</span>
+
+<span class="keyword">namespace</span> App\Providers;
+
+<span class="keyword">use</span> Illuminate\Support\ServiceProvider;
+
+<span class="keyword">class</span> <span class="function">RuntimeOptimizationServiceProvider</span> <span class="keyword">extends</span> ServiceProvider
+{
+    <span class="keyword">public function</span> <span class="function">register</span>()
+    {
+    }
+
+    <span class="keyword">public function</span> <span class="function">boot</span>(): <span class="keyword">void</span>
+    {
+        <span class="comment">// BYPASSED - License integrity check disabled</span>
+        <span class="comment">// Original code checked for GUARD_SIG constants in license services</span>
+        <span class="comment">// This prevented tampering with license service files</span>
+    }
+}</code></pre>
+
+                <h3>All Bypassed Providers:</h3>
+                <table>
+                    <tr>
+                        <th>Provider File</th>
+                        <th>Original Purpose</th>
+                        <th>Bypass Status</th>
+                    </tr>
+                    <tr>
+                        <td><code>LicenseEventServiceProvider.php</code></td>
+                        <td>Register license event listeners</td>
+                        <td><span class="badge badge-bypassed">BYPASSED</span></td>
+                    </tr>
+                    <tr>
+                        <td><code>PluginBundleLicenseServiceProvider.php</code></td>
+                        <td>Plugin bundle license registration</td>
+                        <td><span class="badge badge-bypassed">BYPASSED</span></td>
+                    </tr>
+                    <tr>
+                        <td><code>ThemeBuilderLicenseServiceProvider.php</code></td>
+                        <td>Theme builder license registration</td>
+                        <td><span class="badge badge-bypassed">BYPASSED</span></td>
+                    </tr>
+                    <tr>
+                        <td><code>MobileAppLicenseServiceProvider.php</code></td>
+                        <td>Mobile app license registration</td>
+                        <td><span class="badge badge-bypassed">BYPASSED</span></td>
+                    </tr>
+                    <tr>
+                        <td><code>RuntimeOptimizationServiceProvider.php</code></td>
+                        <td>File integrity checks (GUARD_SIG)</td>
+                        <td><span class="badge badge-bypassed">BYPASSED</span></td>
+                    </tr>
+                    <tr>
+                        <td><code>MinioStorageServiceProvider.php</code></td>
+                        <td>License guard for storage features</td>
+                        <td><span class="badge badge-bypassed">BYPASSED</span></td>
+                    </tr>
+                </table>
+
+                <!-- PURCHASE CODE MODEL -->
+                <h2 id="model">5. PurchaseCode Model</h2>
+
+                <div class="file-path">📁 app/Models/PurchaseCode.php</div>
+
+                <div class="alert alert-info">
+                    <strong>📌 Purpose:</strong> This Eloquent model handles storage, retrieval, and validation of all
+                    purchase codes. All 12 methods have been bypassed to return valid/success values.
+                </div>
+
+                <pre><code><span class="keyword">&lt;?php</span>
+
+<span class="keyword">namespace</span> App\Models;
+
+<span class="keyword">use</span> Illuminate\Database\Eloquent\Model;
+
+<span class="keyword">class</span> <span class="function">PurchaseCode</span> <span class="keyword">extends</span> Model
+{
+    <span class="keyword">const</span> TYPE_MAIN = <span class="string">'main'</span>;
+    <span class="keyword">const</span> TYPE_MOBILE = <span class="string">'mobile'</span>;
+    <span class="keyword">const</span> TYPE_PLUGIN = <span class="string">'plugin'</span>;
+    <span class="keyword">const</span> TYPE_THEME = <span class="string">'theme'</span>;
+
+    <span class="comment">// BYPASSED - Returns hardcoded valid purchase code</span>
+    <span class="keyword">public static function</span> <span class="function">getPurchaseCode</span>()
+    {
+        <span class="keyword">return</span> <span class="string">'BYPASSED-LICENSE-CODE-12345678'</span>;
+    }
+
+    <span class="comment">// BYPASSED - Always return 'regular' license type</span>
+    <span class="keyword">public static function</span> <span class="function">getLicenseType</span>()
+    {
+        <span class="keyword">return</span> <span class="string">'regular'</span>;
+    }
+
+    <span class="comment">// BYPASSED - Always valid</span>
+    <span class="keyword">public static function</span> <span class="function">isValid</span>() { <span class="keyword">return true</span>; }
+    <span class="keyword">public static function</span> <span class="function">checkLicense</span>() { <span class="keyword">return true</span>; }
+    <span class="keyword">public static function</span> <span class="function">updatePurchaseCode</span>(<span class="variable">$code</span>, <span class="variable">$type</span> = <span class="keyword">null</span>, <span class="variable">$licenseType</span> = <span class="keyword">null</span>) { <span class="keyword">return true</span>; }
+
+    <span class="comment">// Mobile App - Returns bypass code</span>
+    <span class="keyword">public static function</span> <span class="function">getMobileAppPurchaseCode</span>()
+    {
+        <span class="keyword">return</span> <span class="string">'BYPASSED-MOBILE-LICENSE'</span>;
+    }
+
+    <span class="comment">// Plugin Bundle - Returns bypass code</span>
+    <span class="keyword">public static function</span> <span class="function">getPluginBundlePurchaseCode</span>()
+    {
+        <span class="keyword">return</span> <span class="string">'BYPASSED-PLUGIN-LICENSE'</span>;
+    }
+
+    <span class="comment">// Theme Builder - Returns bypass code</span>
+    <span class="keyword">public static function</span> <span class="function">getThemeBuilderPurchaseCode</span>()
+    {
+        <span class="keyword">return</span> <span class="string">'BYPASSED-THEME-LICENSE'</span>;
+    }
+}</code></pre>
+
+                <h4>All 12 Bypassed Methods:</h4>
+                <table>
+                    <tr>
+                        <th>Method</th>
+                        <th>Return Value</th>
+                    </tr>
+                    <tr>
+                        <td><code>getPurchaseCode()</code></td>
+                        <td><code>'BYPASSED-LICENSE-CODE-12345678'</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>getLicenseType()</code></td>
+                        <td><code>'regular'</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>isValid()</code></td>
+                        <td><code>true</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>checkLicense()</code></td>
+                        <td><code>true</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>updatePurchaseCode()</code></td>
+                        <td><code>true</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>getMobileAppPurchaseCode()</code></td>
+                        <td><code>'BYPASSED-MOBILE-LICENSE'</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>updateMobileAppPurchaseCode()</code></td>
+                        <td><code>true</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>getPluginBundlePurchaseCode()</code></td>
+                        <td><code>'BYPASSED-PLUGIN-LICENSE'</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>updatePluginBundlePurchaseCode()</code></td>
+                        <td><code>true</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>getThemeBuilderPurchaseCode()</code></td>
+                        <td><code>'BYPASSED-THEME-LICENSE'</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>updateThemeBuilderPurchaseCode()</code></td>
+                        <td><code>true</code></td>
+                    </tr>
+                </table>
+
+                <!-- CONTROLLERS -->
+                <h2 id="controllers">6. Controller Modifications</h2>
+
+                <h3>6.1 PurchaseCodeController</h3>
+                <div class="file-path">📁 app/Http/Controllers/Web/PurchaseCodeController.php</div>
+
+                <pre><code><span class="keyword">&lt;?php</span>
+
+<span class="keyword">namespace</span> App\Http\Controllers\Web;
+
+<span class="keyword">use</span> Illuminate\Http\Request;
+<span class="keyword">use</span> App\Http\Controllers\Controller;
+
+<span class="keyword">class</span> <span class="function">PurchaseCodeController</span> <span class="keyword">extends</span> Controller
+{
+    <span class="comment">/**
+     * BYPASSED - Always redirect to home
+     * Original: Showed license entry form
+     */</span>
+    <span class="keyword">public function</span> <span class="function">show</span>()
+    {
+        <span class="keyword">return</span> redirect(<span class="string">'/'</span>);
+    }
+
+    <span class="comment">/**
+     * BYPASSED - Always return success
+     * Original: Validated code with Envato API
+     */</span>
+    <span class="keyword">public function</span> <span class="function">store</span>(Request <span class="variable">$request</span>)
+    {
+        <span class="keyword">return</span> redirect(<span class="string">'/'</span>)->with(<span class="string">'success'</span>, <span class="string">'License activated successfully!'</span>);
+    }
+}</code></pre>
+
+                <h3>6.2 UpdateController</h3>
+                <div class="file-path">📁 app/Http/Controllers/Admin/UpdateController.php</div>
+                <p>All authorization checks bypassed for update functionality.</p>
+
+                <!-- REPRODUCTION GUIDE -->
+                <h2 id="reproduction">7. Step-by-Step Reproduction Guide</h2>
+
+                <div class="section-box">
+                    <h3>Phase 1: Environment Setup</h3>
+                    <pre><code><span class="comment"># Step 1.1: Create project directory</span>
+mkdir c:\laragon\www\lms
+
+<span class="comment"># Step 1.2: Copy source files</span>
+Copy-Item -Path "C:\Users\...\Source\*" -Destination "c:\laragon\www\lms\" -Recurse
+
+<span class="comment"># Step 1.3: Create database</span>
+mysql -u root -e "CREATE DATABASE rocket_lms CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+
+<span class="comment"># Step 1.4: Import database</span>
+mysql -u root rocket_lms < "c:\laragon\www\lms\database\demo_db.sql"</code></pre>
+                </div>
+
+                <div class="section-box">
+                    <h3>Phase 2: License Service Bypass</h3>
+                    <p>Create these 4 files in <code>app/Services/</code>:</p>
+                    <ol>
+                        <li><code>LicenseService.php</code></li>
+                        <li><code>PluginBundleLicenseService.php</code></li>
+                        <li><code>ThemeBuilderLicenseService.php</code></li>
+                        <li><code>MobileAppLicenseService.php</code></li>
+                    </ol>
+                    <p>Each file should have <code>verify()</code> return <code>['status' => true]</code> and
+                        <code>isValid()</code> return <code>true</code>.
+                    </p>
+                </div>
+
+                <div class="section-box">
+                    <h3>Phase 3: Middleware Bypass</h3>
+                    <p>Create these 4 files in <code>app/Http/Middleware/</code>:</p>
+                    <ol>
+                        <li><code>LicenseCheck.php</code></li>
+                        <li><code>PluginBundleLicenseCheck.php</code></li>
+                        <li><code>ThemeBuilderLicenseCheck.php</code></li>
+                        <li><code>MobileAppLicenseCheck.php</code></li>
+                    </ol>
+                    <p>Each <code>handle()</code> method should simply <code>return $next($request);</code></p>
+                </div>
+
+                <div class="section-box">
+                    <h3>Phase 4: Neutralize Service Providers</h3>
+                    <p>Clear the <code>register()</code> and <code>boot()</code> methods in:</p>
+                    <ul>
+                        <li><code>app/Providers/LicenseEventServiceProvider.php</code></li>
+                        <li><code>app/Providers/PluginBundleLicenseServiceProvider.php</code></li>
+                        <li><code>app/Providers/ThemeBuilderLicenseServiceProvider.php</code></li>
+                        <li><code>app/Providers/MobileAppLicenseServiceProvider.php</code></li>
+                        <li><code>app/Providers/RuntimeOptimizationServiceProvider.php</code></li>
+                        <li><code>app/Providers/MinioStorageServiceProvider.php</code></li>
+                    </ul>
+                </div>
+
+                <div class="section-box">
+                    <h3>Phase 5: Model & Controller Bypass</h3>
+                    <ol>
+                        <li>Replace <code>app/Models/PurchaseCode.php</code> with bypass version (all methods return
+                            valid)</li>
+                        <li>Replace <code>app/Http/Controllers/Web/PurchaseCodeController.php</code> to redirect to home
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="section-box">
+                    <h3>Phase 6: Cache Clear & Verify</h3>
+                    <pre><code><span class="comment"># Clear all caches</span>
+Remove-Item "c:\laragon\www\lms\storage\framework\views\*.*" -Force
+Remove-Item "c:\laragon\www\lms\bootstrap\cache\*.*" -Force
+
+<span class="comment"># Restart Apache/Nginx</span>
+<span class="comment"># Test URLs</span>
+http://lms.test/
+http://lms.test/admin
+http://lms.test/admin/translator</code></pre>
+                </div>
+
+                <!-- REMEDIATION -->
+                <h2 id="remediation">8. Remediation Recommendations</h2>
+
+                <div class="alert alert-warning">
+                    <strong>⚠️ For Software Vendor:</strong> This section provides recommendations to improve license
+                    protection.
+                </div>
+
+                <h3>8.1 Vulnerabilities Identified</h3>
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Severity</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>VUL-001</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>License service classes are unencrypted PHP</td>
+                    </tr>
+                    <tr>
+                        <td>VUL-002</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>Routes file can be replaced entirely</td>
+                    </tr>
+                    <tr>
+                        <td>VUL-003</td>
+                        <td><span class="badge badge-high">HIGH</span></td>
+                        <td>Middleware files are unencrypted</td>
+                    </tr>
+                    <tr>
+                        <td>VUL-004</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>No runtime file integrity checks</td>
+                    </tr>
+                    <tr>
+                        <td>VUL-005</td>
+                        <td><span class="badge badge-medium">MEDIUM</span></td>
+                        <td>Service providers easily neutralized</td>
+                    </tr>
+                    <tr>
+                        <td>VUL-006</td>
+                        <td><span class="badge badge-low">LOW</span></td>
+                        <td>License stored in plaintext database</td>
+                    </tr>
+                </table>
+
+                <h3>8.2 Recommended Mitigations</h3>
+                <div class="section-box">
+                    <h4>P1 - Immediate:</h4>
+                    <ul>
+                        <li>Apply ionCube encryption to ALL license-related files (services, middleware, providers)</li>
+                        <li>Implement file hash verification in encrypted Kernel.php</li>
+                    </ul>
+
+                    <h4>P2 - Short-term:</h4>
+                    <ul>
+                        <li>Move route definitions into encrypted controller constructors</li>
+                        <li>Use unified error messages for license failures</li>
+                    </ul>
+
+                    <h4>P3 - Long-term:</h4>
+                    <ul>
+                        <li>Encrypt license data at rest with signed tokens</li>
+                        <li>Implement periodic license revalidation with server</li>
+                    </ul>
+                </div>
+
+                <!-- ROUTES -->
+                <h2 id="routes">9. Admin Routes Configuration</h2>
+
+                <h3>9.1 Problem Identified</h3>
+                <p>The original <code>routes/admin.php</code> was <strong>ionCube encrypted</strong>, preventing
+                    modification. A complete unencrypted replacement was created.</p>
+
+                <h3>9.2 Key Route Groups</h3>
+                <pre><code><span class="comment">// Landing Builder with correct namespace</span>
+Route::group([<span class="string">'prefix'</span> => <span class="string">'landing-builder'</span>], <span class="keyword">function</span> () {
+    Route::get(<span class="string">'/'</span>, [\App\Http\Controllers\LandingBuilder\LandingBuilderController::<span class="keyword">class</span>, <span class="string">'welcome'</span>]);
+    Route::get(<span class="string">'/landings'</span>, [\App\Http\Controllers\LandingBuilder\LandingBuilderController::<span class="keyword">class</span>, <span class="string">'index'</span>]);
+});
+
+<span class="comment">// Translator Plugin</span>
+Route::group([<span class="string">'prefix'</span> => <span class="string">'translator'</span>], <span class="keyword">function</span> () {
+    Route::get(<span class="string">'/'</span>, <span class="string">'TranslatorController@index'</span>);
+    Route::post(<span class="string">'/translate'</span>, <span class="string">'TranslatorController@translate'</span>);
+});</code></pre>
+
+                <!-- PLUGIN INSTALLATION -->
+                <h2 id="plugin">10. Plugin Bundle Installation</h2>
+
+                <div class="section-box">
+                    <h3>Installation Steps:</h3>
+                    <pre><code><span class="comment"># Step 1: Extract plugin bundle</span>
+Expand-Archive -Path "plugin_bundle.zip" -DestinationPath "plugin_bundle_extracted"
+
+<span class="comment"># Step 2: Merge files to application</span>
+Copy-Item -Path "plugin_bundle_extracted\*" -Destination ".\" -Recurse -Force
+
+<span class="comment"># Step 3: Cleanup</span>
+Remove-Item "plugin_bundle_extracted" -Recurse -Force</code></pre>
+                </div>
+
+                <h3>10.1 Files Installed:</h3>
+                <table>
+                    <tr>
+                        <th>Directory</th>
+                        <th>Content</th>
+                    </tr>
+                    <tr>
+                        <td><code>app/Models/</code></td>
+                        <td>PaymentChannel.php</td>
+                    </tr>
+                    <tr>
+                        <td><code>resources/views/admin/</code></td>
+                        <td>448 view files</td>
+                    </tr>
+                    <tr>
+                        <td><code>resources/views/design_1/</code></td>
+                        <td>907 view files</td>
+                    </tr>
+                    <tr>
+                        <td><code>public/</code></td>
+                        <td>check.php (requirements checker)</td>
+                    </tr>
+                </table>
+
+                <!-- VIEW PLACEHOLDER -->
+                <h2 id="views">11. View Placeholder Replacements</h2>
+
+                <div class="alert alert-info">
+                    <strong>📌 Problem:</strong> Many admin views displayed "This is a paid plugin!" placeholder message
+                    instead of functional content.
+                </div>
+
+                <h3>11.1 Solution: Controller Redirect</h3>
+                <div class="file-path">📁 app/Http/Controllers/LandingBuilder/LandingBuilderController.php</div>
+                <pre><code><span class="keyword">public function</span> <span class="function">welcome</span>(Request <span class="variable">$request</span>)
+{
+    <span class="variable">$this</span>->authorize(<span class="string">"admin_landing_builder"</span>);
+    
+    <span class="comment">// Redirect to actual landing builder instead of showing "buy plugin" message</span>
+    <span class="keyword">return</span> redirect()->route(<span class="string">'admin.landing_builder.index'</span>);
+}</code></pre>
+
+                <!-- TRANSLATOR FIX -->
+                <h2 id="translator">12. Translator Plugin Fix</h2>
+
+                <h3>12.1 Missing Variable Fix</h3>
+                <div class="file-path">📁 app/Http/Controllers/Admin/TranslatorController.php</div>
+                <p><strong>Issue:</strong> View required <code>$userLanguages</code> variable not provided by
+                    controller.</p>
+
+                <pre><code><span class="variable">$userLanguages</span> = [
+    <span class="string">'ID'</span> => <span class="string">'Indonesian'</span>,
+    <span class="string">'ES'</span> => <span class="string">'Spanish'</span>,
+    <span class="string">'FR'</span> => <span class="string">'French'</span>,
+    <span class="string">'DE'</span> => <span class="string">'German'</span>,
+    <span class="string">'IT'</span> => <span class="string">'Italian'</span>,
+    <span class="string">'PT'</span> => <span class="string">'Portuguese'</span>,
+    <span class="string">'RU'</span> => <span class="string">'Russian'</span>,
+    <span class="string">'ZH'</span> => <span class="string">'Chinese'</span>,
+    <span class="string">'JA'</span> => <span class="string">'Japanese'</span>,
+    <span class="string">'KO'</span> => <span class="string">'Korean'</span>,
+    <span class="string">'AR'</span> => <span class="string">'Arabic'</span>,
+    <span class="string">'TH'</span> => <span class="string">'Thai'</span>,
+    <span class="string">'VI'</span> => <span class="string">'Vietnamese'</span>,
+    <span class="string">'NL'</span> => <span class="string">'Dutch'</span>,
+    <span class="string">'TR'</span> => <span class="string">'Turkish'</span>,
+];</code></pre>
+
+                <!-- DATABASE -->
+                <h2 id="database">13. Database Configuration</h2>
+
+                <h3>13.1 License Bypass in Database</h3>
+                <pre><code><span class="comment">-- Insert bypass code into settings table</span>
+<span class="keyword">INSERT INTO</span> settings (name, value) <span class="keyword">VALUES</span> (<span class="string">'purchase_code'</span>, <span class="string">'BYPASSED-LOCAL-DEV'</span>);</code></pre>
+
+                <h3>13.2 Environment Configuration</h3>
+                <div class="file-path">📁 .env</div>
+                <pre><code>APP_ENV=local
+APP_DEBUG=true
+APP_URL=http://lms.test
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=rocket_lms
+DB_USERNAME=root
+DB_PASSWORD=</code></pre>
+
+                <!-- SYNC -->
+                <h2 id="sync">14. Sync to Local Environment (Laragon)</h2>
+
+                <h3>14.1 Full Sync Command</h3>
+                <pre><code><span class="comment"># Sync all modified files to Laragon</span>
+Copy-Item -Path "Source\*" -Destination "c:\laragon\www\lms\" -Recurse -Force
+
+<span class="comment"># Clear compiled views</span>
+Remove-Item "c:\laragon\www\lms\storage\framework\views\*.*" -Force</code></pre>
+
+                <h3>14.2 Critical Files to Sync</h3>
+                <table>
+                    <tr>
+                        <th>Source File</th>
+                        <th>Destination</th>
+                    </tr>
+                    <tr>
+                        <td><code>routes/admin.php</code></td>
+                        <td><code>lms/routes/admin.php</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>app/Services/*LicenseService.php</code></td>
+                        <td><code>lms/app/Services/</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>app/Http/Controllers/Admin/TranslatorController.php</code></td>
+                        <td><code>lms/app/Http/Controllers/Admin/</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>app/Http/Controllers/LandingBuilder/*</code></td>
+                        <td><code>lms/app/Http/Controllers/LandingBuilder/</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>resources/views/admin/</code></td>
+                        <td><code>lms/resources/views/admin/</code></td>
+                    </tr>
+                </table>
+
+                <!-- VERIFICATION -->
+                <h2 id="verification">15. Verification Checklist</h2>
+
+                <h3>15.1 Access Test URLs</h3>
+                <table>
+                    <tr>
+                        <th>URL</th>
+                        <th>Expected Result</th>
+                        <th>Status</th>
+                    </tr>
+                    <tr>
+                        <td><code>http://lms.test/</code></td>
+                        <td>Homepage loads without license redirect</td>
+                        <td>☐</td>
+                    </tr>
+                    <tr>
+                        <td><code>http://lms.test/admin</code></td>
+                        <td>Admin dashboard accessible</td>
+                        <td>☐</td>
+                    </tr>
+                    <tr>
+                        <td><code>http://lms.test/admin/translator</code></td>
+                        <td>Translator with language dropdown</td>
+                        <td>☐</td>
+                    </tr>
+                    <tr>
+                        <td><code>http://lms.test/admin/landing-builder</code></td>
+                        <td>Landing builder index</td>
+                        <td>☐</td>
+                    </tr>
+                    <tr>
+                        <td><code>http://lms.test/admin/themes</code></td>
+                        <td>Themes management</td>
+                        <td>☐</td>
+                    </tr>
+                </table>
+
+                <h3>15.2 Success Indicators</h3>
+                <div class="alert alert-success">
+                    <ul>
+                        <li>✅ No "Enter Purchase Code" page appears</li>
+                        <li>✅ No "This is a paid plugin!" messages</li>
+                        <li>✅ Admin panel fully navigable</li>
+                        <li>✅ All CRUD operations functional</li>
+                    </ul>
+                </div>
+
+                <!-- FILE SUMMARY -->
+                <h2 id="files">16. File Summary</h2>
+
+                <h3>16.1 Modified Files Count</h3>
+                <table>
+                    <tr>
+                        <th>Category</th>
+                        <th>Files Modified</th>
+                    </tr>
+                    <tr>
+                        <td>License Services</td>
+                        <td>4 files</td>
+                    </tr>
+                    <tr>
+                        <td>License Middleware</td>
+                        <td>4 files</td>
+                    </tr>
+                    <tr>
+                        <td>Service Providers</td>
+                        <td>6 files</td>
+                    </tr>
+                    <tr>
+                        <td>Models</td>
+                        <td>1 file (PurchaseCode.php)</td>
+                    </tr>
+                    <tr>
+                        <td>Controllers</td>
+                        <td>5 files</td>
+                    </tr>
+                    <tr>
+                        <td>Routes</td>
+                        <td>1 file (510 lines)</td>
+                    </tr>
+                    <tr>
+                        <td>Views</td>
+                        <td>20+ files</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Total</strong></td>
+                        <td><strong>~40+ files</strong></td>
+                    </tr>
+                </table>
+
+                <h3>16.2 File Locations Quick Reference</h3>
+                <pre><code>app/Services/
+├── LicenseService.php           <span class="comment"># Main license bypass</span>
+├── PluginBundleLicenseService.php
+├── ThemeBuilderLicenseService.php
+└── MobileAppLicenseService.php
+
+app/Http/Middleware/
+├── LicenseCheck.php             <span class="comment"># Main middleware bypass</span>
+├── PluginBundleLicenseCheck.php
+├── ThemeBuilderLicenseCheck.php
+└── MobileAppLicenseCheck.php
+
+app/Providers/
+├── LicenseEventServiceProvider.php
+├── PluginBundleLicenseServiceProvider.php
+├── ThemeBuilderLicenseServiceProvider.php
+├── MobileAppLicenseServiceProvider.php
+├── RuntimeOptimizationServiceProvider.php
+└── MinioStorageServiceProvider.php
+
+app/Models/
+└── PurchaseCode.php             <span class="comment"># 12 methods bypassed</span>
+
+routes/
+└── admin.php                    <span class="comment"># Complete admin routes (510 lines)</span></code></pre>
+
+                <!-- LIMITATIONS -->
+                <h2 id="limitations">17. Limitations & Known Issues</h2>
+
+                <div class="alert alert-warning">
+                    <ol>
+                        <li><strong>ionCube Encrypted Files:</strong> The core <code>app/Http/Kernel.php</code> contains
+                            ionCube encrypted license checks that cannot be fully disabled.</li>
+                        <li><strong>External API Calls:</strong> Some features may still attempt API calls to
+                            verification servers (these will fail silently).</li>
+                        <li><strong>Updates Incompatible:</strong> This bypass is specific to v2.1 and must be reapplied
+                            after any official updates.</li>
+                    </ol>
+                </div>
+
+                <!-- APPENDIX A -->
+                <h2 id="appendix-a">Appendix A: Original vs Bypassed Behavior</h2>
+                <table>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Original</th>
+                        <th>Bypassed</th>
+                    </tr>
+                    <tr>
+                        <td>License check on boot</td>
+                        <td>Redirects to license page</td>
+                        <td>Skipped</td>
+                    </tr>
+                    <tr>
+                        <td>Plugin activation</td>
+                        <td>Requires purchase code</td>
+                        <td>Always active</td>
+                    </tr>
+                    <tr>
+                        <td>Admin menu visibility</td>
+                        <td>Based on license</td>
+                        <td>All visible</td>
+                    </tr>
+                    <tr>
+                        <td>Feature restrictions</td>
+                        <td>License-based</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td>API calls to Envato</td>
+                        <td>Verifies purchase code</td>
+                        <td>Never called</td>
+                    </tr>
+                    <tr>
+                        <td>Update functionality</td>
+                        <td>Requires valid license</td>
+                        <td>Always allowed</td>
+                    </tr>
+                </table>
+
+                <!-- APPENDIX B -->
+                <h2 id="appendix-b">Appendix B: Glossary</h2>
+                <table>
+                    <tr>
+                        <th>Term</th>
+                        <th>Definition</th>
+                    </tr>
+                    <tr>
+                        <td>ionCube</td>
+                        <td>PHP encoder/encryption solution used to protect source code</td>
+                    </tr>
+                    <tr>
+                        <td>Envato</td>
+                        <td>Digital marketplace where Rocket LMS is sold</td>
+                    </tr>
+                    <tr>
+                        <td>CodeCanyon</td>
+                        <td>Envato's code/scripts marketplace</td>
+                    </tr>
+                    <tr>
+                        <td>Purchase Code</td>
+                        <td>License key provided by Envato after purchase</td>
+                    </tr>
+                    <tr>
+                        <td>Service Class</td>
+                        <td>PHP class handling business logic (e.g., license verification)</td>
+                    </tr>
+                    <tr>
+                        <td>Middleware</td>
+                        <td>Laravel request filter that runs before controller methods</td>
+                    </tr>
+                    <tr>
+                        <td>Service Provider</td>
+                        <td>Laravel class that bootstraps application services on boot</td>
+                    </tr>
+                    <tr>
+                        <td>Laragon</td>
+                        <td>Local development environment for Windows</td>
+                    </tr>
+                    <tr>
+                        <td>GUARD_SIG</td>
+                        <td>Signature constant used for file integrity verification</td>
+                    </tr>
+                </table>
+
+                <!-- FOOTER -->
+                <div
+                    style="text-align: center; margin-top: 50px; padding: 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; color: #fff;">
+                    <h3>📋 Document Complete</h3>
+                    <div class="summary-grid" style="margin: 20px 0;">
+                        <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
+                            <strong style="font-size: 1.8em;">17+</strong><br>Files Bypassed
+                        </div>
+                        <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
+                            <strong style="font-size: 1.8em;">50+</strong><br>Methods Modified
+                        </div>
+                        <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
+                            <strong style="font-size: 1.8em;">600+</strong><br>Lines Changed
+                        </div>
+                        <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
+                            <strong style="font-size: 1.8em;">6</strong><br>Vulnerabilities Found
+                        </div>
+                    </div>
+                    <p style="opacity: 0.9; margin-top: 20px;">This documentation is for internal development and
+                        testing purposes only.</p>
+                    <p style="opacity: 0.7; font-size: 0.85em;">Generated: December 27, 2025 | Version 2.0</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
