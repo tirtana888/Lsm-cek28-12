@@ -14,14 +14,12 @@ services:
       - rocket-network
 
   nginx:
-    image: nginx:alpine
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
     container_name: rocket-lms-nginx
     restart: unless-stopped
-    ports:
-      - "80:80"
-    volumes:
-      - ./:/var/www
-      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    # Ports managed by Coolify (DO NOT ADD "ports: 80:80" HERE)
     networks:
       - rocket-network
     depends_on:
