@@ -17,8 +17,7 @@ services:
     image: nginx:alpine
     container_name: rocket-lms-nginx
     restart: unless-stopped
-    ports:
-      - "80:80"
+    # Ports managed by Coolify
     volumes:
       - ./:/var/www
       - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
