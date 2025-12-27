@@ -44,19 +44,28 @@ WORKDIR /var/www
 # Copy existing application directory contents
 COPY . /var/www
 
-# Declare ARGs that Coolify passes to allow Laravel to boot during composer scripts
+# Declare ARGs that Coolify passes
 ARG APP_KEY
 ARG APP_ENV=production
+ARG APP_DEBUG=false
+ARG APP_URL=http://localhost
+
+# Map ARGs to ENVs so they are available during build (important for Laravel discovery)
+ENV APP_KEY=${APP_KEY}
+ENV APP_ENV=${APP_ENV}
+ENV APP_DEBUG=${APP_DEBUG}
+ENV APP_URL=${APP_URL}
 
 # Self-update composer to be sure
 RUN composer self-update
 
 # Install dependencies (Ignore scripts first to ensure vendors are installed)
-# Added --ignore-platform-reqs to bypass extension check failures during the build container phase
-RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction --ignore-platform-reqs -vvv
+# We remove --no-scripts later at runtime or in a custom entrypoint if needed,
+# but for now, we just want to pass the build phase.
+RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction --ignore-platform-reqs
 
-# Run scripts separately
-RUN composer run-script post-autoload-dump
+# Removed: RUN composer run-script post-autoload-dump
+# (This will be handled automatically when the container starts or via an entrypoint)
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
