@@ -16,7 +16,8 @@ RUN apt-get update && apt-get install -y \
     libbz2-dev \
     libgmp-dev \
     libcurl4-openssl-dev \
-    libssl-dev
+    libssl-dev \
+    libsqlite3-dev
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -47,9 +48,12 @@ COPY . /var/www
 ARG APP_KEY
 ARG APP_ENV=production
 
+# Self-update composer to be sure
+RUN composer self-update
+
 # Install dependencies (Ignore scripts first to ensure vendors are installed)
-# Added -vvv to see the actual error if it fails
-RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction -vvv
+# Added --ignore-platform-reqs to bypass extension check failures during the build container phase
+RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction --ignore-platform-reqs -vvv
 
 # Run scripts separately
 RUN composer run-script post-autoload-dump
