@@ -19,6 +19,9 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
     expose:
       - "80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.app.loadbalancer.server.port=80"
     depends_on:
       - db
 
