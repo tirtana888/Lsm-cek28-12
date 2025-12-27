@@ -51,8 +51,8 @@ WORKDIR /var/www
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Install PHP dependencies (ignore platform requirements to avoid extension issues)
-RUN COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs
+# Install PHP dependencies (skip scripts that require Laravel to boot)
+RUN COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs --no-scripts
 
 # Set permissions and create required directories/files
 RUN chown -R www-data:www-data /var/www \
