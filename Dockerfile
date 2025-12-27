@@ -48,10 +48,16 @@ COPY . /var/www
 # Set working directory
 WORKDIR /var/www
 
-# Set permissions
+# Set permissions and create required directories/files
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage \
-    && chmod -R 755 /var/www/bootstrap/cache
+    && chmod -R 755 /var/www/bootstrap/cache \
+    && mkdir -p /var/www/storage/framework/cache \
+    && mkdir -p /var/www/storage/framework/sessions \
+    && mkdir -p /var/www/storage/framework/views \
+    && mkdir -p /var/www/storage/logs \
+    && echo "<?php // Cache bootstrap placeholder" > /var/www/storage/framework/cache/cache-bootstrap.php \
+    && chown -R www-data:www-data /var/www/storage
 
 # Expose port 80
 EXPOSE 80
