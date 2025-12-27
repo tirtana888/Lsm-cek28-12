@@ -48,6 +48,12 @@ COPY . /var/www
 # Set working directory
 WORKDIR /var/www
 
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+
 # Set permissions and create required directories/files
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage \
