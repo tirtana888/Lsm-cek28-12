@@ -7,21 +7,15 @@ RUN curl -o ioncube.tar.gz https://downloads.ioncube.com/loader_downloads/ioncub
     && echo "zend_extension=ioncube_loader_lin_8.1.so" > /usr/local/etc/php/conf.d/00-ioncube.ini \
     && rm -rf ioncube.tar.gz ioncube
 
-# Install additional PHP extensions
-RUN docker-php-ext-install pdo_mysql bcmath
-
 # Set environment variables
 ENV WEB_DOCUMENT_ROOT=/app/public
 ENV PHP_MEMORY_LIMIT=512M
 
-# Copy application code
+# Copy application code (vendor folder already included)
 COPY . /app
 
 # Set working directory
 WORKDIR /app
-
-# Install composer dependencies
-RUN composer install --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs
 
 # Set permissions
 RUN chown -R application:application /app \
