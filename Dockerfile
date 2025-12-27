@@ -14,7 +14,9 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     libicu-dev \
     libbz2-dev \
-    libgmp-dev
+    libgmp-dev \
+    libcurl4-openssl-dev \
+    libssl-dev
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -22,7 +24,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # Install PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-configure intl \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip intl bz2 gmp
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip intl bz2 gmp curl xml
 
 # Install IonCube Loader
 RUN curl -o ioncube.tar.gz https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz \
@@ -46,7 +48,8 @@ ARG APP_KEY
 ARG APP_ENV=production
 
 # Install dependencies (Ignore scripts first to ensure vendors are installed)
-RUN composer install --no-dev --optimize-autoloader --no-scripts
+# Added -vvv to see the actual error if it fails
+RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction -vvv
 
 # Run scripts separately
 RUN composer run-script post-autoload-dump
