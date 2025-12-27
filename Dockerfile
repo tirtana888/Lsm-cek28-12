@@ -27,13 +27,18 @@ RUN curl -o ioncube.tar.gz https://downloads.ioncube.com/loader_downloads/ioncub
     && echo "zend_extension=ioncube_loader_lin_8.1.so" > /usr/local/etc/php/conf.d/00-ioncube.ini \
     && rm -rf ioncube.tar.gz ioncube
 
-# Create nginx config
-RUN mkdir -p /run/nginx
+# Create directories
+RUN mkdir -p /run/nginx /var/log/nginx
+
+# Copy PHP-FPM config (listen on TCP port 9000)
+COPY docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
+
+# Copy nginx config
 COPY docker/nginx/conf.d/default.conf /etc/nginx/http.d/default.conf
 
 # Create supervisor config
 RUN mkdir -p /etc/supervisor.d
-RUN echo -e "[supervisord]\nnodaemon=true\nuser=root\n\n[program:nginx]\ncommand=nginx -g 'daemon off;'\nautostart=true\nautorestart=true\n\n[program:php-fpm]\ncommand=php-fpm -F\nautostart=true\nautorestart=true" > /etc/supervisor.d/app.ini
+RUN echo -e "[supervisord]\nnodaemon=true\nuser=root\n\n[program:nginx]\ncommand=nginx -g 'daemon off;'\nautostart=true\nautorestart=true\nstdout_logfile=/dev/stdout\nstdout_logfile_maxbytes=0\nstderr_logfile=/dev/stderr\nstderr_logfile_maxbytes=0\n\n[program:php-fpm]\ncommand=php-fpm -F\nautostart=true\nautorestart=true\nstdout_logfile=/dev/stdout\nstdout_logfile_maxbytes=0\nstderr_logfile=/dev/stderr\nstderr_logfile_maxbytes=0" > /etc/supervisor.d/app.ini
 
 # Copy application code
 COPY . /var/www
