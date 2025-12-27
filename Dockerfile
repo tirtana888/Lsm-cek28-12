@@ -11,14 +11,16 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libzip-dev \
     libjpeg-dev \
-    libfreetype6-dev
+    libfreetype6-dev \
+    libicu-dev
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
+    && docker-php-ext-configure intl \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip intl
 
 # Install IonCube Loader
 RUN curl -o ioncube.tar.gz https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz \
@@ -35,6 +37,10 @@ WORKDIR /var/www
 
 # Copy existing application directory contents
 COPY . /var/www
+
+# Declare ARGs that Coolify passes to allow Laravel to boot during composer scripts
+ARG APP_KEY
+ARG APP_ENV=production
 
 # Install dependencies
 RUN composer install --no-dev --optimize-autoloader
