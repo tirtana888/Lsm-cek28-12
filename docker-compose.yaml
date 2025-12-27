@@ -11,9 +11,9 @@ services:
       - APP_DEBUG=${APP_DEBUG:-false}
       - APP_KEY=${APP_KEY}
       - APP_URL=${APP_URL}
-      - DB_CONNECTION=mysql
-      - DB_HOST=db
-      - DB_PORT=3306
+      - DB_CONNECTION=${DB_CONNECTION:-mysql}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT:-3306}
       - DB_DATABASE=${DB_DATABASE}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
@@ -22,20 +22,10 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.services.app.loadbalancer.server.port=80"
-    depends_on:
-      - db
+    networks:
+      - coolify
+      - default
 
-  db:
-    image: mysql:8.0
-    restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_USER: ${DB_USERNAME}
-    volumes:
-      - rocket-db-data:/var/lib/mysql
-
-volumes:
-  rocket-db-data:
-    driver: local
+networks:
+  coolify:
+    external: true
