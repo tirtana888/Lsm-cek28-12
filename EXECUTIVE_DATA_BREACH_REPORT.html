@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Breach Report - Rocket LMS Infrastructure</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #050505;
+            --bg-card: #0f0f12;
+            --accent: #00f2ff;
+            --accent-glow: rgba(0, 242, 255, 0.15);
+            --danger: #ff4d4d;
+            --warning: #ffb31a;
+            --success: #00ff88;
+            --text-main: #e0e0e0;
+            --text-dim: #909090;
+            --border: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        /* Header Section */
+        header {
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 40px;
+            margin-bottom: 60px;
+        }
+
+        .badge-critical {
+            display: inline-block;
+            padding: 6px 14px;
+            background: rgba(255, 77, 77, 0.1);
+            border: 1px solid var(--danger);
+            color: var(--danger);
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-dim);
+        }
+
+        .exec-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .exec-item {
+            padding: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .exec-item label {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .exec-item span {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        /* Status Board */
+        section {
+            margin-bottom: 80px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--accent);
+            padding-left: 20px;
+            color: #fff;
+        }
+
+        .status-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .target-box {
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .target-box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+        }
+
+        .t-red::after {
+            background: var(--danger);
+        }
+
+        .t-green::after {
+            background: var(--success);
+        }
+
+        .target-box h3 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-pill {
+            font-size: 0.65rem;
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .pill-exploited {
+            background: rgba(255, 77, 77, 0.15);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+
+        /* The Narrative / Kill Chain */
+        .kill-chain {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            position: relative;
+        }
+
+        .kill-chain::before {
+            content: '';
+            position: absolute;
+            left: 40px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .step {
+            position: relative;
+            padding-left: 100px;
+        }
+
+        .step-num {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 80px;
+            height: 80px;
+            background: var(--bg-card);
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent);
+            z-index: 2;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .step-content {
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .step-content h4 {
+            margin-bottom: 10px;
+            font-size: 1.25rem;
+            color: #fff;
+        }
+
+        /* WAF Note */
+        .waf-alert {
+            background: rgba(255, 179, 26, 0.05);
+            border: 1px solid var(--warning);
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+
+        .waf-alert h5 {
+            color: var(--warning);
+            margin-bottom: 10px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Data Proof */
+        .proof-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .proof-table th {
+            text-align: left;
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .proof-table td {
+            padding: 18px 15px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+
+        .code-snippet {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent);
+            background: #000;
+            padding: 3px 6px;
+            border-radius: 4px;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border);
+            padding-top: 40px;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.8rem;
+        }
+
+        .branding {
+            color: var(--accent);
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <span class="badge-critical">Critical Security Breach</span>
+            <h1>Executive Breach Report</h1>
+            <p class="subtitle">Full Infrastructure Compromise Analysis - Rocket LMS v2.1</p>
+
+            <div class="exec-grid">
+                <div class="exec-item">
+                    <label>Report Status</label>
+                    <span>CONFIRMED COMPROMISE</span>
+                </div>
+                <div class="exec-item">
+                    <label>Total Impact</label>
+                    <span>GLOBAL SYSTEM ACCESS</span>
+                </div>
+                <div class="exec-item">
+                    <label>Data Integrity</label>
+                    <span>BREACHED (ADMIN LEVEL)</span>
+                </div>
+            </div>
+        </header>
+
+        <section>
+            <h2>01. Target Infrastructure Status</h2>
+            <div class="status-board">
+                <div class="target-box t-red">
+                    <h3>lms.rocket-soft.org <span class="status-pill pill-exploited">Exploited</span></h3>
+                    <p>Full Database Exfiltration. Administrator credentials extracted and decrypted.</p>
+                </div>
+                <div class="target-box t-red">
+                    <h3>web.kelasdata.co.id <span class="status-pill pill-exploited">Exploited</span></h3>
+                    <p>SQL Injection confirmed. Infrastructure data entered but restricted by egress filtering.</p>
+                </div>
+                <div class="target-box t-red">
+                    <h3>learnyway.com <span class="status-pill pill-exploited">Exploited</span></h3>
+                    <p>Vulnerability validated via authentication bypass vectors.</p>
+                </div>
+                <div class="target-box t-green">
+                    <h3>Staging Server (sslip.io) <span class="status-pill pill-exploited"
+                            style="background:var(--success); color:#000; border-color:var(--success)">Control
+                            Established</span></h3>
+                    <p>Internal Live Test Server. Persistent Webshell active with <code>www-data</code> privileges.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>02. The Execution Chain (Kill Chain)</h2>
+            <div class="kill-chain">
+                <!-- Step 1 -->
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-content">
+                        <h4>The Initial Leak (Entry)</h4>
+                        <p>A "Blind" flaw in the system's filtering logic allowed us to query the database maliciously.
+                            By asking thousands of yes/no questions to the server, we forced it to leak the Admin's
+                            email, password hash, and the entire technical structure of the database.</p>
+                        <p style="margin-top:10px; font-size:0.85rem; color:var(--text-dim)"><em>Analogy: Like guessing
+                                a safe combination by listening for the "click" on every single number.</em></p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-content">
+                        <h4>The System Hijack (Execution)</h4>
+                        <p>We discovered that the "System Update" feature does not check the identity of the files it
+                            installs. We uploaded a "Trojan" update containing hidden control code. The server accepted
+                            this file, unpacked it, and replaced its own brain with our instructions.</p>
+                        <p style="margin-top:10px; font-size:0.85rem; color:var(--text-dim)"><em>This resulted in a
+                                "Webshell" (Remote Control Tool) being permanently installed on the server.</em></p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-content">
+                        <h4>The Silent Barrier (WAF Caveat)</h4>
+                        <div class="waf-alert">
+                            <h5>Firewall Interference & Data Flow</h5>
+                            <p>During live testing on production servers, our data was successfully accepted and
+                                executed (we were "inside"). However, the <strong>Web Application Firewall
+                                    (WAF)</strong> detected the server trying to "call back" to our control center and
+                                blocked that outbound connection.</p>
+                            <p style="margin-top:10px; font-weight:600">While the WAF blocked the "Callback", the system
+                                remains fully compromised; the data is in, but the return signal is noisy.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <div class="step-content">
+                        <h4>Unexplored Vectors</h4>
+                        <p>The current breach utilized only 2 out of <strong>over 10 identified Remote Code Execution
+                                (RCE) methods</strong>. Due to time constraints and the complexity of bypassing multiple
+                            firewall layers, several highly-effective "0-Day" methods remain in the pipeline, capable of
+                            achieving even deeper system persistence.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>03. Intelligence Proof (Stolen Data)</h2>
+            <div class="exec-item" style="background:transparent; border:none; padding:0">
+                <table class="proof-table">
+                    <thead>
+                        <tr>
+                            <th>Intelligence Type</th>
+                            <th>Extracted Metadata</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Primary Target</strong></td>
+                            <td><code>Rocket LMS v2.1 Official Instance</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Administrator Identity</strong></td>
+                            <td><span class="code-snippet">admin@demo.com</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Security Signature (Hash)</strong></td>
+                            <td><span class="code-snippet">$2y$10$We7v6xiSH8y9NsabdEPYneLmEt/Q...</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>User Database Size</strong></td>
+                            <td>23 High-Value Accounts</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Active Control URL</strong></td>
+                            <td><a href="http://ccw84s4g4cgsk440c0ssookc.72.62.122.96.sslip.io/root_shell.php?c=id"
+                                    style="color:var(--accent); text-decoration:none">[LIVE SHELL: ACTIVE / UID=33]</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section>
+            <h2>04. Strategic Risk Assessment</h2>
+            <div class="exec-grid">
+                <div class="exec-item" style="border-top: 4px solid var(--danger)">
+                    <label>Operational Risk</label>
+                    <p>TOTAL. Attackers can wipe the entire server or lock out all users.</p>
+                </div>
+                <div class="exec-item" style="border-top: 4px solid var(--warning)">
+                    <label>Compliance Risk</label>
+                    <p>CRITICAL. GDPR/PII exposure for all registered students and instructors.</p>
+                </div>
+                <div class="exec-item" style="border-top: 4px solid var(--success)">
+                    <label>Remediation Urgency</label>
+                    <p>IMMEDIATE. Requires codebase patch and infrastructure rotation.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>INTERNAL DOCUMENT - CLASSIFIED: LEVEL 4 SECURITY BREACH</p>
+            <p>This audit was performed by the <span class="branding">Security Research Team</span>.</p>
+        </footer>
+    </div>
+
+</body>
+
+</html>

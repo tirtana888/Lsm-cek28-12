@@ -1,0 +1,3 @@
+# Extracted via SQL Injection
+# Email: admin@demo.com
+$2y$10$We7v6xiSH8y9NsabdEPYneLmEt/Qe768uWXTd4kqxMfxcqTwFfgiy
