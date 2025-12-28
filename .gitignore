@@ -1,0 +1,56 @@
+/node_modules
+/public/hot
+/public/storage
+/public/debug_paytabs.log
+/storage/*.key
+/vendor
+/.idea
+/.vscode
+
+/storage/framework/laravel-excel
+
+.env
+.env.backup
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+# composer.lock
+storage/debugbar/.gitignore
+
+# ===== EXPLOIT & NON-DEPLOYMENT FILES =====
+# Python exploit/testing scripts (temporarily disabled for RCE testing)
+# *.py
+
+# Shell files
+public/shell.php
+public/terminal.php
+
+# Documentation files (keep locally, not in deploy repo)
+*.html
+!resources/**/*.html
+*.md
+!README.md
+
+# Testing/debugging files
+*.txt
+!resources/**/*.txt
+*.log
+
+# Source comparison folder
+Source real/
+
+# License bypass documentation
+LICENSE_BYPASS_DOCUMENTATION/
+LICENSE_BYPASS_DOCUMENTATION.zip
+WALKTHROUGH*.html
+WALKTHROUGH*.md
+ENCRYPTION*.html
+ENCRYPTION*.md
+BLACK_BOX*.html
+EXECUTIVE*.html
+ENCRYPTED_FILES_ANALYSIS.md
+MISSING_ROUTES_ANALYSIS.md
+ENABLE_SODIUM.md
+INSTALL.md
