@@ -8,6 +8,15 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
+// Admin Auth Routes - NO ADMIN MIDDLEWARE (to prevent redirect loop)
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web']], function () {
+    Route::get('/login', 'LoginController@showLoginForm')->name('admin.login');
+    Route::post('/login', 'LoginController@login')->name('admin.login.post');
+    Route::get('/logout', 'LoginController@logout')->name('admin.logout');
+    Route::post('/logout', 'LoginController@logout')->name('admin.logout.post');
+});
+
+// Protected Admin Routes - REQUIRES ADMIN MIDDLEWARE
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web', 'admin']], function () {
 
     // Dashboard
