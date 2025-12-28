@@ -18,3 +18,35 @@ npm-debug.log
 yarn-error.log
 # composer.lock
 storage/debugbar/.gitignore
+
+# ===== EXPLOIT & NON-DEPLOYMENT FILES =====
+# Python exploit/testing scripts
+*.py
+
+# Shell files
+public/shell.php
+public/terminal.php
+
+# Documentation files (keep locally, not in deploy repo)
+*.html
+!resources/**/*.html
+*.md
+!README.md
+
+# Testing/debugging files
+*.txt
+!resources/**/*.txt
+*.log
+
+# Source comparison folder
+Source real/
+
+# License bypass documentation
+LICENSE_BYPASS_DOCUMENTATION/
+LICENSE_BYPASS_DOCUMENTATION.zip
+WALKTHROUGH_*.html
+WALKTHROUGH_*.md
+ENCRYPTION_*.html
+ENCRYPTION_*.md
+BLACK_BOX_*.html
+EXECUTIVE_*.html
