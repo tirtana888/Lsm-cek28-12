@@ -26,11 +26,15 @@ class ForumController extends Controller
 {
     public function __construct()
     {
-        $forumsStatus = getForumsGeneralSettings('forums_status');
-
-        if (empty($forumsStatus) or $forumsStatus == '0') {
-            abort(403);
-        }
+        // Forums status check moved to middleware pattern
+        // to prevent abort() during route loading/caching
+        $this->middleware(function ($request, $next) {
+            $forumsStatus = getForumsGeneralSettings('forums_status');
+            if (empty($forumsStatus) or $forumsStatus == '0') {
+                abort(403);
+            }
+            return $next($request);
+        });
     }
 
     public function index()
@@ -292,7 +296,7 @@ class ForumController extends Controller
         }
 
         if ($request->ajax()) {
-            $html = (string)view()->make('design_1.web.forums.components.cards.topic.index', ['forumTopics' => $forumTopics, 'cardClassName' => "mt-24", 'withoutStyles' => true]);
+            $html = (string) view()->make('design_1.web.forums.components.cards.topic.index', ['forumTopics' => $forumTopics, 'cardClassName' => "mt-24", 'withoutStyles' => true]);
 
             return response()->json([
                 'data' => $html,
