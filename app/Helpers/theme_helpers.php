@@ -4,13 +4,7 @@ $themeCache = null;
 
 function getActiveTheme()
 {
-<<<<<<< HEAD
-    global $themeCache;
-
-    if (empty($themeCache)) {
-=======
     return cache()->remember('active_theme_data', 24 * 60 * 60, function () {
->>>>>>> final_initial_branch
         $withRelations = [
             'homeLanding' => function ($query) {
                 $query->with([
@@ -24,35 +18,20 @@ function getActiveTheme()
             }
         ];
 
-<<<<<<< HEAD
-        $themeCache = \App\Models\Theme::query()
-=======
         $theme = \App\Models\Theme::query()
->>>>>>> final_initial_branch
             ->where('enable', true)
             ->with($withRelations)
             ->first();
 
-<<<<<<< HEAD
-        if (empty($themeCache)) {
-            $themeCache = \App\Models\Theme::query()
-=======
         if (empty($theme)) {
             $theme = \App\Models\Theme::query()
->>>>>>> final_initial_branch
                 ->where('is_default', true)
                 ->with($withRelations)
                 ->first();
         }
-<<<<<<< HEAD
-    }
-
-    return $themeCache;
-=======
 
         return $theme;
     });
->>>>>>> final_initial_branch
 }
 
 function getUserThemeColorMode()
