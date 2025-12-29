@@ -28,6 +28,14 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
     Route::group(['prefix' => 'settings'], function () {
         Route::get('/', 'SettingsController@index')->name('admin.settings');
         Route::get('/update-app', 'UpdateController@index')->name('admin.settings.update_app');
+
+        // Mobile App Settings
+        Route::group(['prefix' => 'mobile-app'], function () {
+            Route::get('/', 'MobileAppSettingsController@index');
+            Route::get('/{name}', 'MobileAppSettingsController@index');
+            Route::post('/store', 'MobileAppSettingsController@store');
+        });
+
         Route::get('/{page}', 'SettingsController@page')->name('admin.settings.page');
         Route::post('/{name}/store', 'SettingsController@store')->name('admin.settings.store');
         Route::post('/{name}', 'SettingsController@store'); // Added to fix 404 on financial, features, etc.
@@ -579,12 +587,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
         Route::post('/database-update', 'UpdateController@databaseUpdate');
     });
 
-    // Mobile App Settings
-    Route::group(['prefix' => 'settings/mobile-app'], function () {
-        Route::get('/', 'MobileAppSettingsController@index');
-        Route::get('/{name}', 'MobileAppSettingsController@index');
-        Route::post('/store', 'MobileAppSettingsController@store');
-    });
 
     // Mobile App License
     Route::group(['prefix' => 'mobile-app-license'], function () {

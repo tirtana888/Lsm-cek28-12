@@ -59,7 +59,7 @@ class Kernel extends HttpKernel
         'impersonate' => \App\Http\Middleware\Impersonate::class,
         'share' => \App\Http\Middleware\Share::class,
         'user_locale' => \App\Http\Middleware\UserLocale::class,
-        'admin_locale' => \App\Providers\AdminLocale::class,
+        'admin_locale' => \App\Http\Middleware\AdminLocale::class,
         // 'check_mobile_app' => \App\Http\Middleware\CheckMobileApp::class,
         // 'license_check' => \App\Http\Middleware\LicenseCheck::class,
         'check_maintenance' => \App\Http\Middleware\CheckMaintenance::class,
