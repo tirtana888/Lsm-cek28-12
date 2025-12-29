@@ -60,13 +60,8 @@ class Kernel extends HttpKernel
         'share' => \App\Http\Middleware\Share::class,
         'user_locale' => \App\Http\Middleware\UserLocale::class,
         'admin_locale' => \App\Http\Middleware\AdminLocale::class,
-<<<<<<< HEAD
         'check_mobile_app' => \App\Http\Middleware\CheckMobileApp::class,
         'license_check' => \App\Http\Middleware\LicenseCheck::class,
-=======
-        // 'check_mobile_app' => \App\Http\Middleware\CheckMobileApp::class,
-        // 'license_check' => \App\Http\Middleware\LicenseCheck::class,
->>>>>>> final_initial_branch
         'check_maintenance' => \App\Http\Middleware\CheckMaintenance::class,
         'check_restriction' => \App\Http\Middleware\CheckRestriction::class,
         'web.auth' => \App\Http\Middleware\WebAuthenticate::class,
