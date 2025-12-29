@@ -91,7 +91,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
 
         // Landing Components
         Route::group(['prefix' => '{landingId}/components'], function () {
-            Route::get('/add', [\App\Http\Controllers\LandingBuilder\LandingBuilderComponentController::class, 'add'])->name('admin.landing_builder.components.add');
+            Route::post('/add', [\App\Http\Controllers\LandingBuilder\LandingBuilderComponentController::class, 'add'])->name('admin.landing_builder.components.add');
             Route::get('/{componentId}/edit', [\App\Http\Controllers\LandingBuilder\LandingBuilderComponentController::class, 'edit'])->name('admin.landing_builder.components.edit');
             Route::post('/{componentId}/update', [\App\Http\Controllers\LandingBuilder\LandingBuilderComponentController::class, 'update'])->name('admin.landing_builder.components.update');
             Route::get('/{componentId}/duplicate', [\App\Http\Controllers\LandingBuilder\LandingBuilderComponentController::class, 'duplicate'])->name('admin.landing_builder.components.duplicate');
