@@ -256,5 +256,6 @@
 
 
 @push('scripts_bottom')
+    <script src="/assets/default/js/panel/ai_course_generator.js"></script>
     <script src="/assets/vendors/summernote/summernote-bs4.min.js"></script>
 @endpush
