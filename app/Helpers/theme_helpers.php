@@ -4,9 +4,7 @@ $themeCache = null;
 
 function getActiveTheme()
 {
-    global $themeCache;
-
-    if (empty($themeCache)) {
+    return cache()->remember('active_theme_data', 24 * 60 * 60, function () {
         $withRelations = [
             'homeLanding' => function ($query) {
                 $query->with([
@@ -20,20 +18,20 @@ function getActiveTheme()
             }
         ];
 
-        $themeCache = \App\Models\Theme::query()
+        $theme = \App\Models\Theme::query()
             ->where('enable', true)
             ->with($withRelations)
             ->first();
 
-        if (empty($themeCache)) {
-            $themeCache = \App\Models\Theme::query()
+        if (empty($theme)) {
+            $theme = \App\Models\Theme::query()
                 ->where('is_default', true)
                 ->with($withRelations)
                 ->first();
         }
-    }
 
-    return $themeCache;
+        return $theme;
+    });
 }
 
 function getUserThemeColorMode()

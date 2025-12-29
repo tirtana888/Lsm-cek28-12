@@ -21,8 +21,14 @@ class AdminAuthenticate
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->check() and auth()->user()->isAdmin()) {
+        $adminPanelUrl = getAdminPanelUrl();
+        $path = $request->path();
 
+        if ($request->is(trim($adminPanelUrl, '/') . '/login') or $request->is(trim($adminPanelUrl, '/') . '/login/*')) {
+            return $next($request);
+        }
+
+        if (auth()->check() and auth()->user()->isAdmin()) {
             \Session::forget('impersonated');
 
             if (auth()->user()->hasPermission('admin_notifications_list')) {
@@ -38,6 +44,7 @@ class AdminAuthenticate
             $generalSettings = getGeneralSettings();
             view()->share('generalSettings', $generalSettings);
 
+            $this->injectTypography();
 
             $userLanguages = $this->getUserLanguagesLists($generalSettings);
 
@@ -91,7 +98,7 @@ class AdminAuthenticate
             return $next($request);
         }
 
-        return redirect(getAdminPanelUrl().'/login');
+        return redirect(getAdminPanelUrl() . '/login');
     }
 
     public function getUserLanguagesLists($generalSettings)
@@ -127,5 +134,16 @@ class AdminAuthenticate
         }
 
         return $userLanguages;
+    }
+
+    private function injectTypography()
+    {
+        $typographyCss = "
+            @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap');
+            :root { --font-family: 'Sora', sans-serif; }
+            body, .main-sidebar, .navbar, .card, .btn, .form-control, table { font-family: var(--font-family) !important; }
+            h1, h2, h3, h4, h5, h6, .section-title { font-family: var(--font-family) !important; font-weight: 700 !important; }
+        ";
+        view()->share('typographyCss', $typographyCss);
     }
 }

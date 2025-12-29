@@ -172,8 +172,98 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
         Route::get('/{id}/edit', 'WebinarController@edit')->name('admin.webinars.edit');
         Route::post('/{id}/update', 'WebinarController@update')->name('admin.webinars.update');
         Route::get('/{id}/delete', 'WebinarController@destroy')->name('admin.webinars.destroy');
-        Route::get('/{id}/students', 'WebinarController@students');
-        Route::get('/{id}/export-students-list', 'WebinarController@exportStudentsList');
+        Route::get('/{id}/students', 'WebinarController@studentsLists');
+        Route::get('/{id}/export-students-list', 'WebinarController@exportExcel');
+        Route::get('/{id}/statistics', 'WebinarStatisticController@index');
+        Route::get('/{id}/sendNotification', 'WebinarController@notificationToStudents');
+        Route::post('/{id}/sendNotification', 'WebinarController@sendNotificationToStudents');
+        Route::get('/{id}/approve', 'WebinarController@approve');
+        Route::get('/{id}/reject', 'WebinarController@reject');
+        Route::get('/{id}/unpublish', 'WebinarController@unpublish');
+    });
+
+    // Course Personal Notes
+    Route::group(['prefix' => 'webinars/personal-notes'], function () {
+        Route::get('/', 'CoursePersonalNotesController@index');
+        Route::get('/{id}/download-attachment', 'CoursePersonalNotesController@downloadAttachment');
+        Route::post('/{id}/update', 'CoursePersonalNotesController@update');
+        Route::get('/{id}/delete', 'CoursePersonalNotesController@delete');
+    });
+
+    // Course Noticeboards
+    Route::group(['prefix' => 'course-noticeboards'], function () {
+        Route::get('/', 'CourseNoticeboardController@index');
+        Route::get('/create', 'CourseNoticeboardController@create');
+        Route::post('/store', 'CourseNoticeboardController@store');
+        Route::get('/{id}/edit', 'CourseNoticeboardController@edit');
+        Route::post('/{id}/update', 'CourseNoticeboardController@update');
+        Route::get('/{id}/delete', 'CourseNoticeboardController@delete');
+    });
+
+    // Course Forums
+    Route::group(['prefix' => 'webinars/course_forums'], function () {
+        Route::get('/', 'CourseForumsControllers@index');
+        Route::get('/{webinar_id}/forums', 'CourseForumsControllers@forums');
+        Route::get('/{webinar_id}/forums/{forum_id}/answers', 'CourseForumsControllers@answers');
+        Route::get('/{webinar_id}/forums/{forum_id}/edit', 'CourseForumsControllers@forumEdit');
+        Route::post('/{webinar_id}/forums/{forum_id}/update', 'CourseForumsControllers@forumUpdate');
+        Route::get('/{webinar_id}/forums/{forum_id}/delete', 'CourseForumsControllers@forumDelete');
+        Route::get('/{webinar_id}/forums/{forum_id}/answers/{id}/edit', 'CourseForumsControllers@answerEdit');
+        Route::get('/{webinar_id}/forums/{forum_id}/answers/{id}/delete', 'CourseForumsControllers@answerDelete');
+        Route::post('/{webinar_id}/forums/{forum_id}/answers/{id}/update', 'CourseForumsControllers@answerUpdate');
+    });
+
+    // Agora History
+    Route::group(['prefix' => 'agora_history'], function () {
+        Route::get('/', 'AgoraHistoryController@index');
+        Route::get('/export', 'AgoraHistoryController@exportExcel');
+    });
+
+    // Upcoming Courses
+    Route::group(['prefix' => 'upcoming_courses'], function () {
+        Route::get('/', 'UpcomingCoursesController@index');
+        Route::get('/new', 'UpcomingCoursesController@create');
+        Route::post('/store', 'UpcomingCoursesController@store');
+        Route::get('/{id}/edit', 'UpcomingCoursesController@edit');
+        Route::post('/{id}/update', 'UpcomingCoursesController@update');
+        Route::get('/{id}/delete', 'UpcomingCoursesController@destroy');
+        Route::get('/{id}/approve', 'UpcomingCoursesController@approve');
+        Route::get('/{id}/reject', 'UpcomingCoursesController@reject');
+        Route::get('/{id}/unpublish', 'UpcomingCoursesController@unpublish');
+        Route::get('/export', 'UpcomingCoursesController@exportExcel');
+        Route::get('/{id}/followers', 'UpcomingCoursesController@followers');
+    });
+
+    // Attendances
+    Route::group(['prefix' => 'attendances'], function () {
+        Route::get('/', 'AttendanceController@index');
+        Route::get('/export', 'AttendanceController@exportExcel');
+        Route::get('/settings', 'AttendanceController@settings');
+        Route::post('/settings', 'AttendanceController@storeSettings');
+    });
+
+    // Waitlists
+    Route::group(['prefix' => 'waitlists'], function () {
+        Route::get('/', 'WaitlistController@index');
+        Route::get('/export', 'WaitlistController@exportExcel');
+        Route::get('/{id}/view_list', 'WaitlistController@viewList');
+        Route::get('/{id}/export_list', 'WaitlistController@exportUsersList');
+        Route::get('/{id}/clear_list', 'WaitlistController@clearList');
+        Route::get('/{id}/disable', 'WaitlistController@disableWaitlist');
+        Route::get('/items/{id}/delete', 'WaitlistController@deleteWaitlistItems');
+    });
+
+    // Events
+    Route::group(['prefix' => 'events'], function () {
+        Route::get('/', 'EventsController@index');
+        Route::get('/create', 'EventsController@create');
+        Route::post('/store', 'EventsController@store');
+        Route::get('/{id}/edit', 'EventsController@edit');
+        Route::post('/{id}/update', 'EventsController@update');
+        Route::get('/{id}/delete', 'EventsController@delete');
+        Route::get('/{id}/export', 'EventsController@exportExcel');
+        Route::get('/{id}/sendNotification', 'EventsController@notificationToStudents');
+        Route::post('/{id}/sendNotification', 'EventsController@sendNotificationToStudents');
     });
 
     // Categories
@@ -203,19 +293,11 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
         Route::post('/', 'QuizController@store');
         Route::get('/{id}/edit', 'QuizController@edit');
         Route::post('/{id}/update', 'QuizController@update');
-        Route::get('/{id}/delete', 'QuizController@destroy');
+        Route::get('/{id}/delete', 'QuizController@delete');
         Route::get('/results', 'QuizController@results');
     });
 
-    // Certificates
-    Route::group(['prefix' => 'certificates'], function () {
-        Route::get('/', 'CertificateController@index')->name('admin.certificates.index');
-        Route::get('/create', 'CertificateController@create');
-        Route::post('/', 'CertificateController@store');
-        Route::get('/{id}/edit', 'CertificateController@edit');
-        Route::post('/{id}/update', 'CertificateController@update');
-        Route::get('/{id}/delete', 'CertificateController@destroy');
-    });
+
 
     // Financial 
     Route::group(['prefix' => 'financial'], function () {
@@ -237,16 +319,17 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
 
     // Marketing
     Route::group(['prefix' => 'marketing'], function () {
-        Route::get('/promotions', 'PromotionController@index');
-        Route::get('/promotions/create', 'PromotionController@create');
-        Route::post('/promotions', 'PromotionController@store');
-        Route::get('/promotions/{id}/edit', 'PromotionController@edit');
-        Route::post('/promotions/{id}/update', 'PromotionController@update');
-        Route::get('/promotions/{id}/delete', 'PromotionController@destroy');
-        Route::get('/advertising', 'AdvertisingBannersController@index');
-        Route::get('/newsletters', 'NewsletterController@index');
-        Route::get('/notifications', 'NotificationsController@index');
-        Route::get('/featured', 'FeaturedTopicsController@index');
+        Route::get('/', 'PromotionsController@index')->name('admin.marketing.index');
+        Route::get('/promotions', 'PromotionsController@index')->name('admin.marketing.promotions');
+        Route::get('/promotions/create', 'PromotionsController@create');
+        Route::post('/promotions', 'PromotionsController@store');
+        Route::get('/promotions/{id}/edit', 'PromotionsController@edit');
+        Route::post('/promotions/{id}/update', 'PromotionsController@update');
+        Route::get('/promotions/{id}/delete', 'PromotionsController@delete');
+        Route::get('/advertising', 'AdvertisingBannersController@index')->name('admin.marketing.advertising');
+        Route::get('/newsletters', 'NewslettersController@index')->name('admin.marketing.newsletters');
+        Route::get('/notifications', 'NotificationsController@index')->name('admin.marketing.notifications');
+        Route::get('/featured', 'FeaturedTopicsController@index')->name('admin.marketing.featured');
     });
 
     // Blog
@@ -417,8 +500,11 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
 
     // Assignments
     Route::group(['prefix' => 'assignments'], function () {
-        Route::get('/', 'AssignmentController@index');
-        Route::get('/history', 'AssignmentHistoryController@index');
+        Route::get('/', 'AssignmentController@index')->name('admin.assignments.index');
+        Route::get('/history', 'AssignmentController@index')->name('admin.assignments.history'); // Fallback to index if history controller missing
+        Route::get('/{id}/students', 'AssignmentController@students')->name('admin.assignments.students');
+        Route::get('/{id}/conversations/{history_id}', 'AssignmentController@conversations')->name('admin.assignments.conversations');
+        Route::get('/{id}/delete', 'AssignmentController@destroy')->name('admin.assignments.delete');
     });
 
     // Enrollments
@@ -440,7 +526,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
         Route::get('/webinars', 'ReviewsController@webinars');
         Route::get('/bundles', 'ReviewsController@bundles');
         Route::get('/{id}/toggle-status', 'ReviewsController@toggleStatus');
-        Route::get('/{id}/delete', 'ReviewsController@destroy');
+        Route::get('/{id}/delete', 'ReviewsController@delete');
     });
 
     // Consultants/Meetings
@@ -462,10 +548,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
         Route::get('/{id}/accept', 'BecomeInstructorController@accept');
     });
 
-    // Waiting Lists
-    Route::group(['prefix' => 'waiting-lists'], function () {
-        Route::get('/', 'WaitingListsController@index');
-    });
+
 
     // Licenses (BYPASS - always returns valid)
     Route::group(['prefix' => 'licenses'], function () {
