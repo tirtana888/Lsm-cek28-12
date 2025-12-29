@@ -75,7 +75,7 @@ class AiContentGenerator
         $client = $this->makeOpenAIClient();
 
         $settings = getAiContentsSettingsName();
-        $model = $settings['text_service_type'] ?? 'gpt-3.5-turbo';
+        $model = $settings['text_service_type'] ?? 'gpt-4o';
         $maxToken = $settings['max_tokens'] ?? null;
         $countText = !empty($settings['number_of_text_generated_per_request']) ? $settings['number_of_text_generated_per_request'] : 1;
 
@@ -116,7 +116,7 @@ class AiContentGenerator
 
         try {
             $client = new \GuzzleHttp\Client();
-            $response = $client->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key={$apiKey}", [
+            $response = $client->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={$apiKey}", [
                 'json' => [
                     'contents' => [
                         [
