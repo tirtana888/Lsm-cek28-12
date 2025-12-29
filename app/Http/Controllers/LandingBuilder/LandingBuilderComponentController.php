@@ -52,11 +52,14 @@ class LandingBuilderComponentController extends Controller
             'order' => $order + 1,
         ]);
 
+        // Load the relation needed by the view
+        $landingComponent->load('landingBuilderComponent');
+
         $viewData = [
             'landingComponent' => $landingComponent,
             'landingItem' => $landingItem,
         ];
-        $html = (string)view()->make('landingBuilder.admin.pages.create.tabs.includes.landing_component_card', $viewData);
+        $html = (string) view()->make('landingBuilder.admin.pages.create.tabs.includes.landing_component_card', $viewData);
 
         return response()->json([
             'code' => 200,
