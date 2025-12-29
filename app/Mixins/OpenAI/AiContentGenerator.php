@@ -54,6 +54,7 @@ class AiContentGenerator
     private function getTextContent($prompt)
     {
         $contents = [];
+<<<<<<< HEAD
         $client = $this->makeClient();
 
         $settings = getAiContentsSettingsName();
@@ -70,6 +71,38 @@ class AiContentGenerator
                 'model' => $model,
                 'max_tokens' => isset($maxToken) ? (int)$maxToken : null,
                 'n' => (int)$countText,
+=======
+
+        $aiSettings = getOthersPersonalizationSettings('ai_function');
+        $provider = !empty($aiSettings) ? ($aiSettings['ai_provider'] ?? 'openai') : 'openai';
+
+        if ($provider == 'gemini') {
+            $contents = $this->getGeminiContent($prompt);
+        } elseif ($provider == 'deepseek') {
+            $contents = $this->getDeepSeekContent($prompt);
+        } else {
+            $contents = $this->getOpenAIContent($prompt);
+        }
+
+        return $contents;
+    }
+
+    private function getOpenAIContent($prompt)
+    {
+        $contents = [];
+        $client = $this->makeOpenAIClient();
+
+        $settings = getAiContentsSettingsName();
+        $model = $settings['text_service_type'] ?? 'gpt-4o';
+        $maxToken = $settings['max_tokens'] ?? null;
+        $countText = !empty($settings['number_of_text_generated_per_request']) ? $settings['number_of_text_generated_per_request'] : 1;
+
+        try {
+            $result = $client->chat()->create([
+                'model' => $model,
+                'max_tokens' => isset($maxToken) ? (int) $maxToken : null,
+                'n' => (int) $countText,
+>>>>>>> final_initial_branch
                 'messages' => [
                     ["role" => "user", "content" => $prompt],
                 ],
@@ -84,12 +117,112 @@ class AiContentGenerator
             }
 
         } catch (\Exception $exception) {
+<<<<<<< HEAD
             dd($exception);
+=======
+            // Log or handle error
+>>>>>>> final_initial_branch
         }
 
         return $contents;
     }
 
+<<<<<<< HEAD
+=======
+    private function getGeminiContent($prompt)
+    {
+        $contents = [];
+        $aiSettings = getOthersPersonalizationSettings('ai_function');
+        $apiKey = $aiSettings['gemini_api_key'] ?? null;
+
+        if (empty($apiKey)) {
+            return $contents;
+        }
+
+        try {
+            $client = new \GuzzleHttp\Client();
+            $response = $client->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key={$apiKey}", [
+                'json' => [
+                    'contents' => [
+                        [
+                            'parts' => [
+                                ['text' => $prompt]
+                            ]
+                        ]
+                    ]
+                ]
+            ]);
+
+            $result = json_decode($response->getBody()->getContents(), true);
+
+            if (!empty($result['candidates'][0]['content']['parts'][0]['text'])) {
+                $contents[] = $this->trimText($result['candidates'][0]['content']['parts'][0]['text']);
+            }
+        } catch (\Exception $e) {
+            // Log or handle error
+        }
+
+        return $contents;
+    }
+
+    private function getDeepSeekContent($prompt)
+    {
+        $contents = [];
+        $aiSettings = getOthersPersonalizationSettings('ai_function');
+        $apiKey = $aiSettings['deepseek_api_key'] ?? null;
+
+        if (empty($apiKey)) {
+            return $contents;
+        }
+
+        try {
+            $client = new \GuzzleHttp\Client();
+            $response = $client->post("https://api.deepseek.com/v1/chat/completions", [
+                'headers' => [
+                    'Authorization' => "Bearer {$apiKey}",
+                    'Content-Type' => 'application/json',
+                ],
+                'json' => [
+                    'model' => 'deepseek-chat',
+                    'messages' => [
+                        ['role' => 'user', 'content' => $prompt]
+                    ]
+                ]
+            ]);
+
+            $result = json_decode($response->getBody()->getContents(), true);
+
+            if (!empty($result['choices'][0]['message']['content'])) {
+                $contents[] = $this->trimText($result['choices'][0]['message']['content']);
+            }
+        } catch (\Exception $e) {
+            // Log or handle error
+        }
+
+        return $contents;
+    }
+
+    private function makeOpenAIClient()
+    {
+        $aiSettings = getOthersPersonalizationSettings('ai_function');
+        $secretKey = $aiSettings['openai_api_key'] ?? null;
+
+        // Fallback to old setting if new one is empty
+        if (empty($secretKey)) {
+            $settings = getAiContentsSettingsName();
+            $secretKey = !empty($settings['secret_key']) ? $settings['secret_key'] : null;
+        }
+
+        if (!empty($secretKey)) {
+            return OpenAI::factory()
+                ->withApiKey($secretKey)
+                ->make();
+        }
+
+        throw new \Exception("Invalid Api Key", "403");
+    }
+
+>>>>>>> final_initial_branch
     private function trimText($text)
     {
         $text = ltrim($text, "\r\n");
@@ -102,7 +235,11 @@ class AiContentGenerator
 
     private function getImageContent($prompt, $imageSize = "256")
     {
+<<<<<<< HEAD
         $client = $this->makeClient();
+=======
+        $client = $this->makeOpenAIClient();
+>>>>>>> final_initial_branch
 
         $settings = getAiContentsSettingsName();
         $maxImage = !empty($settings['number_of_images_generated_per_request']) ? $settings['number_of_images_generated_per_request'] : 1;
@@ -112,7 +249,11 @@ class AiContentGenerator
         try {
             $result = $client->images()->create([
                 'prompt' => $prompt,
+<<<<<<< HEAD
                 'n' => (int)$maxImage,
+=======
+                'n' => (int) $maxImage,
+>>>>>>> final_initial_branch
                 'size' => $this->makeImageSize($imageSize),
                 'response_format' => 'url',
             ]);
@@ -123,7 +264,11 @@ class AiContentGenerator
                 }
             }
         } catch (\Exception $exception) {
+<<<<<<< HEAD
             dd($exception);
+=======
+            // Log or handle error
+>>>>>>> final_initial_branch
         }
 
         return $images;
@@ -140,6 +285,7 @@ class AiContentGenerator
         return $sizes[$size] ?? '256x256';
     }
 
+<<<<<<< HEAD
     private function makeClient()
     {
         $settings = getAiContentsSettingsName();
@@ -155,6 +301,8 @@ class AiContentGenerator
         throw new \Exception("Invalid Api Key", "403");
     }
 
+=======
+>>>>>>> final_initial_branch
     private function makePrompt($data)
     {
         $prompt = null;

@@ -10,12 +10,20 @@
             <span class="ml-4 font-12 text-white">{{ trans('update.percent_off', ['percent' => $maximumTicketsDiscount]) }}</span>
         </div>
     @elseif(!empty($event->start_date) and $event->start_date > $currentTime)
+<<<<<<< HEAD
         <div class="d-flex-center badge bg-primary">
+=======
+        <div class="d-flex-center badge bg-info">
+>>>>>>> final_initial_branch
             <x-iconsax-bul-calendar-2 class="icons text-white" width="20px" height="20px"/>
             <span class="ml-4 font-12 text-white">{{ trans('update.scheduled') }}</span>
         </div>
     @elseif(!empty($event->end_date) and $event->end_date < $currentTime)
+<<<<<<< HEAD
         <div class="d-flex-center badge bg-primary">
+=======
+        <div class="d-flex-center badge bg-success">
+>>>>>>> final_initial_branch
             <x-iconsax-bul-tick-circle class="icons text-white" width="20px" height="20px"/>
             <span class="ml-4 font-12 text-white">{{ trans('update.completed') }}</span>
         </div>
@@ -25,7 +33,11 @@
             <span class="ml-4 font-12 text-white">{{ trans('update.sold_out') }}</span>
         </div>
     @else
+<<<<<<< HEAD
         <div class="d-flex-center badge bg-success">
+=======
+        <div class="d-flex-center badge bg-warning">
+>>>>>>> final_initial_branch
             <x-iconsax-bul-calendar-tick class="icons text-white" width="20px" height="20px"/>
             <span class="ml-4 font-12 text-white">{{ trans('update.ongoing') }}</span>
         </div>

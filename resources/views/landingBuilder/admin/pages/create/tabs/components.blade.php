@@ -25,6 +25,7 @@
                         @include('landingBuilder.admin.pages.create.tabs.includes.component_card')
                     @endforeach
                 </div>
+<<<<<<< HEAD
 
                 {{-- START Upgrade Notice--}}
                 <div class="mt-24 p-20 rounded-16 position-relative overflow-hidden bg-primary" style="box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);">
@@ -62,6 +63,11 @@
 
        
 
+=======
+            </div>
+        </div>
+
+>>>>>>> final_initial_branch
         {{-- Assigned Components --}}
         <div class="col-12 col-lg-6 mt-16">
             <div class="bg-gray-100 p-16 rounded-16">

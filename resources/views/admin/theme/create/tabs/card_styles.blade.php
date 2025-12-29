@@ -3,7 +3,11 @@
 
         @php
             $items = [
+<<<<<<< HEAD
                 'course' => ['grid_card_1'],
+=======
+                'course' => ['grid_card_1', 'grid_card_2'],
+>>>>>>> final_initial_branch
                 'product' => ['grid_card_1'],
                 'bundle' => ['grid_card_1'],
                 'upcoming_course' => ['grid_card_1'],

@@ -225,7 +225,13 @@
     <h3 class="font-14 font-weight-bold mt-24 mb-16">{{ trans('update.course_description') }}</h3>
 
     <div class="form-group bg-white-editor">
-        <label class="form-group-label is-required">{{ trans('public.description') }}</label>
+        <div class="d-flex align-items-center justify-content-between mb-2">
+            <label class="form-group-label is-required mb-0">{{ trans('public.description') }}</label>
+            <button type="button" class="btn btn-primary btn-sm js-generate-ai" data-type="description" data-field="description">
+                <i class="fa fa-magic"></i>
+                {{ trans('update.generate_with_ai') }}
+            </button>
+        </div>
         <textarea name="description" class="main-summernote form-control @error('description')  is-invalid @enderror" data-height="400" placeholder="{{ trans('forms.webinar_description_placeholder') }}">{!! (!empty($webinar) and !empty($webinar->translate($locale))) ? $webinar->translate($locale)->description : old('description')  !!}</textarea>
         @error('description')
         <div class="invalid-feedback">
@@ -256,5 +262,6 @@
 
 
 @push('scripts_bottom')
+    <script src="/assets/default/js/panel/ai_course_generator.js"></script>
     <script src="/assets/vendors/summernote/summernote-bs4.min.js"></script>
 @endpush

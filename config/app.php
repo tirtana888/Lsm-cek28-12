@@ -197,7 +197,11 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+<<<<<<< HEAD
         App\Providers\RuntimeOptimizationServiceProvider::class,
+=======
+        // App\Providers\RuntimeOptimizationServiceProvider::class,
+>>>>>>> final_initial_branch
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Mews\Captcha\CaptchaServiceProvider::class,
         Jorenvh\Share\Providers\ShareServiceProvider::class,
@@ -216,10 +220,17 @@ return [
         PayMob\PayMobServiceProvider::class,
         Clickpaysa\Laravel_package\PaypageServiceProvider::class,
         \App\Providers\LandingBuilderProvider::class,
+<<<<<<< HEAD
         App\Providers\LicenseEventServiceProvider::class,
         App\Providers\PluginBundleLicenseServiceProvider::class,
         App\Providers\ThemeBuilderLicenseServiceProvider::class,
         App\Providers\MobileAppLicenseServiceProvider::class,
+=======
+        // App\Providers\LicenseEventServiceProvider::class,
+        // App\Providers\PluginBundleLicenseServiceProvider::class,
+        // App\Providers\ThemeBuilderLicenseServiceProvider::class,
+        // App\Providers\MobileAppLicenseServiceProvider::class,
+>>>>>>> final_initial_branch
     ],
 
     /*
@@ -239,7 +250,11 @@ return [
         'Captcha' => Mews\Captcha\Facades\Captcha::class,
         'Share' => Jorenvh\Share\ShareFacade::class,
         //'Rave' => KingFlamez\Rave\Facades\Rave::class,
+<<<<<<< HEAD
         'Redsys'    => Ssheduardo\Redsys\Facades\Redsys::class,
+=======
+        'Redsys' => Ssheduardo\Redsys\Facades\Redsys::class,
+>>>>>>> final_initial_branch
         'Zoom' => Jubaer\Zoom\Facades\Zoom::class,
         'GeoIP' => \Torann\GeoIP\Facades\GeoIP::class,
         'PDF' => niklasravnsborg\LaravelPdf\Facades\Pdf::class,

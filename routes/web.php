@@ -70,7 +70,7 @@ Route::get('/emergencyDatabaseUpdate', function () {
     ]);
 });
 
-Route::group(['namespace' => 'Auth', 'middleware' => ['check_mobile_app', 'share', 'check_maintenance', 'check_restriction']], function () {
+Route::group(['namespace' => 'Auth', 'middleware' => ['share', 'check_maintenance']], function () {
     Route::get('/login', 'LoginController@showLoginForm');
     Route::post('/login', 'LoginController@login');
     Route::get('/logout', 'LoginController@logout');
@@ -91,7 +91,7 @@ Route::group(['namespace' => 'Auth', 'middleware' => ['check_mobile_app', 'share
     Route::get('/reff/{code}', 'ReferralController@referral');
 });
 
-Route::group(['namespace' => 'Web', 'middleware' => ['check_mobile_app', 'impersonate', 'share', 'check_maintenance', 'check_restriction']], function () {
+Route::group(['namespace' => 'Web', 'middleware' => ['share', 'check_maintenance']], function () {
     Route::get('/stripe', function () {
         return view('design_1.web.cart.payment.channels.stripe');
     });
