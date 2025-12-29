@@ -3,7 +3,7 @@
 
         @php
             $items = [
-                'course' => ['grid_card_1'],
+                'course' => ['grid_card_1', 'grid_card_2'],
                 'product' => ['grid_card_1'],
                 'bundle' => ['grid_card_1'],
                 'upcoming_course' => ['grid_card_1'],
