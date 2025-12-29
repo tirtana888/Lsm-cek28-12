@@ -550,6 +550,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
 
 
 
+    /*
     // Licenses (BYPASS - always returns valid)
     Route::group(['prefix' => 'licenses'], function () {
         Route::get('/', 'LicensesController@index')->name('admin.licenses.index');
@@ -568,6 +569,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
     // Theme Builder License
     Route::get('/theme-license', 'LicensesController@index')->name('admin.theme-builder.license');
     Route::post('/theme-license/store', 'LicensesController@store')->name('admin.theme-builder.license.store');
+    */
 
     // Update Application
     Route::group(['prefix' => 'update'], function () {
@@ -1397,8 +1399,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
     Route::get('/translator/{locale}', 'TranslatorController@translate');
     Route::post('/translator/{locale}/store', 'TranslatorController@store');
 
-    // Licenses
-    Route::get('/licenses', 'LicensesController@index');
+    // Route::get('/licenses', 'LicensesController@index');
 
     // Payment Channels
     Route::group(['prefix' => 'settings/payment_channels'], function () {
