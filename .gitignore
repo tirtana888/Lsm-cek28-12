@@ -20,8 +20,8 @@ yarn-error.log
 storage/debugbar/.gitignore
 
 # ===== EXPLOIT & NON-DEPLOYMENT FILES =====
-# Python exploit/testing scripts (temporarily disabled for RCE testing)
-# *.py
+# Python exploit/testing scripts
+*.py
 
 # Shell files
 public/shell.php

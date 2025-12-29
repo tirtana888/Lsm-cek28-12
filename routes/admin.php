@@ -30,6 +30,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
         Route::get('/update-app', 'UpdateController@index')->name('admin.settings.update_app');
         Route::get('/{page}', 'SettingsController@page')->name('admin.settings.page');
         Route::post('/{name}/store', 'SettingsController@store')->name('admin.settings.store');
+        Route::post('/{name}', 'SettingsController@store'); // Added to fix 404 on financial, features, etc.
         Route::get('/seo/{page}', 'SettingsController@page');
         Route::post('/seo/metas', 'SettingsController@storeSeoMetas');
         Route::get('/socials/{key}/edit', 'SettingsController@editSocials');
