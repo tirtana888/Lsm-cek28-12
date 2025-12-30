@@ -140,16 +140,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
         Route::get('/', 'UserController@index')->name('admin.users.index');
         Route::get('/create', 'UserController@create')->name('admin.users.create');
         Route::post('/store', 'UserController@store')->name('admin.users.store');
-        Route::get('/{id}', 'UserController@show')->name('admin.users.show');
-        Route::get('/{id}/edit', 'UserController@edit')->name('admin.users.edit');
-        Route::post('/{id}/update', 'UserController@update')->name('admin.users.update');
-        Route::get('/{id}/delete', 'UserController@destroy')->name('admin.users.destroy');
-        Route::post('/{id}/update-image', 'UserController@updateImage');
-        Route::post('/{id}/financial', 'UserController@financialUpdate');
-        Route::post('/{id}/occupations', 'UserController@occupationsUpdate');
-        Route::post('/{id}/badges', 'BadgesController@badgesUpdate');
-        Route::get('/{id}/badge/{badge_id}/delete', 'BadgesController@deleteBadge');
-        Route::get('/{id}/impersonate', 'UserController@impersonate');
         Route::match(['get', 'post'], '/search', 'UserController@search');
         Route::get('/excel/all', 'UserController@exportExcelAllUsers');
         Route::get('/excel/students', 'UserController@exportExcelStudents');
@@ -211,6 +201,18 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
             Route::get('/settings', 'BecomeInstructorController@settings');
             Route::post('/settings/store', 'SettingController@storeGeneralSettings');
         });
+
+        // Parametric Routes (Must be last to avoid shadowing)
+        Route::get('/{id}', 'UserController@show')->name('admin.users.show');
+        Route::get('/{id}/edit', 'UserController@edit')->name('admin.users.edit');
+        Route::post('/{id}/update', 'UserController@update')->name('admin.users.update');
+        Route::get('/{id}/delete', 'UserController@destroy')->name('admin.users.destroy');
+        Route::post('/{id}/update-image', 'UserController@updateImage');
+        Route::post('/{id}/financial', 'UserController@financialUpdate');
+        Route::post('/{id}/occupations', 'UserController@occupationsUpdate');
+        Route::post('/{id}/badges', 'BadgesController@badgesUpdate');
+        Route::get('/{id}/badge/{badge_id}/delete', 'BadgesController@deleteBadge');
+        Route::get('/{id}/impersonate', 'UserController@impersonate');
     });
 
     // Staffs/Admins
