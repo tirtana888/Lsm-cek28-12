@@ -36,11 +36,7 @@ class UserLoginHistoryMixin
         $location = null;
 
         $locationData = $this->getUserLocation($ipAddress);
-<<<<<<< HEAD
-        if (!empty($locationData) and !empty($locationData['status']) and $locationData['status'] == "success") {
-=======
         if ($locationData && ($locationData['status'] ?? null) == "success") {
->>>>>>> final_initial_branch
             $country = $locationData['country'] ?? null;
             $city = $locationData['city'] ?? null;
             $location = (!empty($locationData['lat']) and !empty($locationData['lon'])) ? "{$locationData['lat']},{$locationData['lon']}" : null;
@@ -92,16 +88,7 @@ class UserLoginHistoryMixin
 
     private function getUserLocation($ipAddress)
     {
-<<<<<<< HEAD
-        try {
-            $response = Http::get("http://ip-api.com/json/{$ipAddress}");
-            return $response->json();
-        } catch (\Exception $e) {
-            return null;
-        }
-=======
         return null; // Bypassed for performance
->>>>>>> final_initial_branch
     }
 
 }

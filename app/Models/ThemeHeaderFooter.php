@@ -39,17 +39,11 @@ class ThemeHeaderFooter extends Model implements TranslatableContract
 
     static $headers = [ // component_name => title
         'header_1' => 'header 1',
-<<<<<<< HEAD
-=======
         'header_2' => 'header 2',
->>>>>>> final_initial_branch
     ];
 
     static $footers = [ // component_name => title
         'footer_1' => 'footer 1',
-<<<<<<< HEAD
-=======
         'footer_2' => 'footer 2',
->>>>>>> final_initial_branch
     ];
 }

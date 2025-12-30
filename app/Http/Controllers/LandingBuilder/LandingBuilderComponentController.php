@@ -52,21 +52,13 @@ class LandingBuilderComponentController extends Controller
             'order' => $order + 1,
         ]);
 
-<<<<<<< HEAD
-=======
         // Load the relation needed by the view
         $landingComponent->load('landingBuilderComponent');
-
->>>>>>> final_initial_branch
         $viewData = [
             'landingComponent' => $landingComponent,
             'landingItem' => $landingItem,
         ];
-<<<<<<< HEAD
-        $html = (string)view()->make('landingBuilder.admin.pages.create.tabs.includes.landing_component_card', $viewData);
-=======
         $html = (string) view()->make('landingBuilder.admin.pages.create.tabs.includes.landing_component_card', $viewData);
->>>>>>> final_initial_branch
 
         return response()->json([
             'code' => 200,
@@ -138,9 +130,6 @@ class LandingBuilderComponentController extends Controller
                 ])
                 ->orderBy('created_at', 'desc')
                 ->get();
-<<<<<<< HEAD
-
-=======
         } else if ($landingComponent->landingBuilderComponent->name == LandingBuilderComponentsNames::MEETING_BOOKING_LIST) {
             $data['meetingInstructors'] = User::query()->select('id', 'full_name', 'username', 'avatar', 'avatar_settings', 'email', 'mobile')
                 ->where('status', 'active')
@@ -160,14 +149,11 @@ class LandingBuilderComponentController extends Controller
                 ->where('role_name', Role::$organization)
                 ->where('status', 'active')
                 ->get();
->>>>>>> final_initial_branch
         } else if ($landingComponent->landingBuilderComponent->name == LandingBuilderComponentsNames::INSTRUCTORS) {
             $data['instructors'] = User::query()->select('id', 'full_name', 'username', 'avatar', 'avatar_settings', 'email', 'mobile')
                 ->where('role_name', Role::$teacher)
                 ->where('status', 'active')
                 ->get();
-<<<<<<< HEAD
-=======
         } else if ($landingComponent->landingBuilderComponent->name == LandingBuilderComponentsNames::MULTI_TAB_COURSES) {
             $data['categories'] = Category::query()
                 ->where('parent_id', null)
@@ -176,7 +162,6 @@ class LandingBuilderComponentController extends Controller
                 ])
                 ->orderBy('order', 'asc')
                 ->get();
->>>>>>> final_initial_branch
         }
 
         return $data;

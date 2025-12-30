@@ -9,10 +9,6 @@ class LandingBuilderComponentsNames
 
     // Names
     const TWO_COLUMNS_HERO = 'two_columns_hero';
-<<<<<<< HEAD
-    const STATISTICS = 'statistics';
-    const FEATURED_COURSES = 'featured_courses';
-=======
     const FULL_WIDTH_HERO = 'full_width_hero';
     const SINGLE_INSTRUCTOR_HERO = 'single_instructor_hero';
     const STATISTICS = 'statistics';
@@ -20,18 +16,12 @@ class LandingBuilderComponentsNames
     const LINKS_AND_TITLES_SLIDER_2_ROWS = 'links_and_titles_slider_2_rows';
     const LINKS_AND_TITLES_SLIDER_1_ROW = 'links_and_titles_slider_1_row';
     const INFORMATION_CARDS = 'information_cards';
->>>>>>> final_initial_branch
     const TRENDING_CATEGORIES = 'trending_categories';
     const NEWEST_COURSES = 'newest_courses';
     const BEST_SELLING_COURSES = 'best_selling_courses';
     const BEST_RATED_COURSES = 'best_rated_courses';
     const DISCOUNTED_COURSES = 'discounted_courses';
     const FREE_COURSES = 'free_courses';
-<<<<<<< HEAD
-    const INSTRUCTORS = 'instructors';
-    const BLOG = 'blog';
-    const VERTICAL_SPACER = 'vertical_spacer';
-=======
     const UPCOMING_COURSES = 'upcoming_courses';
     const COURSE_BUNDLES = 'course_bundles';
     const STORE_PRODUCTS = 'store_products';
@@ -80,15 +70,10 @@ class LandingBuilderComponentsNames
     const MULTI_TAB_COURSES = 'multi_tab_courses';
     const COUNTDOWN_CALL_TO_ACTION = 'countdown_call_to_action';
     const MEETING_PACKAGES_GRID = 'meeting_packages_grid';
->>>>>>> final_initial_branch
 
 
     const categories = [
         self::TWO_COLUMNS_HERO => LandingBuilderComponentCategories::HERO,
-<<<<<<< HEAD
-        self::STATISTICS => LandingBuilderComponentCategories::STATISTICS,
-        self::FEATURED_COURSES => LandingBuilderComponentCategories::COURSES,
-=======
         self::FULL_WIDTH_HERO => LandingBuilderComponentCategories::HERO,
         self::SINGLE_INSTRUCTOR_HERO => LandingBuilderComponentCategories::HERO,
         self::SLIDING_COURSES_HERO => LandingBuilderComponentCategories::HERO,
@@ -98,18 +83,12 @@ class LandingBuilderComponentsNames
         self::LINKS_AND_TITLES_SLIDER_2_ROWS => LandingBuilderComponentCategories::MISCELLANEOUS,
         self::LINKS_AND_TITLES_SLIDER_1_ROW => LandingBuilderComponentCategories::MISCELLANEOUS,
         self::INFORMATION_CARDS => LandingBuilderComponentCategories::CARDS,
->>>>>>> final_initial_branch
         self::TRENDING_CATEGORIES => LandingBuilderComponentCategories::CATEGORIES,
         self::NEWEST_COURSES => LandingBuilderComponentCategories::COURSES,
         self::BEST_SELLING_COURSES => LandingBuilderComponentCategories::COURSES,
         self::BEST_RATED_COURSES => LandingBuilderComponentCategories::COURSES,
         self::DISCOUNTED_COURSES => LandingBuilderComponentCategories::COURSES,
         self::FREE_COURSES => LandingBuilderComponentCategories::COURSES,
-<<<<<<< HEAD
-        self::INSTRUCTORS => LandingBuilderComponentCategories::INSTRUCTORS,
-        self::BLOG => LandingBuilderComponentCategories::BLOG_POSTS,
-        self::VERTICAL_SPACER => LandingBuilderComponentCategories::MISCELLANEOUS,
-=======
         self::UPCOMING_COURSES => LandingBuilderComponentCategories::UPCOMING_COURSES,
         self::COURSE_BUNDLES => LandingBuilderComponentCategories::BUNDLES,
         self::STORE_PRODUCTS => LandingBuilderComponentCategories::STORE_PRODUCTS,
@@ -156,7 +135,6 @@ class LandingBuilderComponentsNames
         self::MULTI_TAB_COURSES => LandingBuilderComponentCategories::COURSES,
         self::COUNTDOWN_CALL_TO_ACTION => LandingBuilderComponentCategories::CALL_TO_ACTION,
         self::MEETING_PACKAGES_GRID => LandingBuilderComponentCategories::CARDS,
->>>>>>> final_initial_branch
     ];
 
     /**

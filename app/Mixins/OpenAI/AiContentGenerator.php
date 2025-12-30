@@ -54,24 +54,6 @@ class AiContentGenerator
     private function getTextContent($prompt)
     {
         $contents = [];
-<<<<<<< HEAD
-        $client = $this->makeClient();
-
-        $settings = getAiContentsSettingsName();
-        $model = $settings['text_service_type'] ?? null;
-        $maxToken = $settings['max_tokens'] ?? null;
-        $countText = !empty($settings['number_of_text_generated_per_request']) ? $settings['number_of_text_generated_per_request'] : 1;
-
-        if (!in_array($model, AiTextServices::chatCompletionsEndpoint)) {
-            throw new \Exception("Model not supported or deprecated: " . $model);
-        }
-
-        try {
-            $result = $client->chat()->create([
-                'model' => $model,
-                'max_tokens' => isset($maxToken) ? (int)$maxToken : null,
-                'n' => (int)$countText,
-=======
 
         $aiSettings = getOthersPersonalizationSettings('ai_function');
         $provider = !empty($aiSettings) ? ($aiSettings['ai_provider'] ?? 'openai') : 'openai';
@@ -102,7 +84,6 @@ class AiContentGenerator
                 'model' => $model,
                 'max_tokens' => isset($maxToken) ? (int) $maxToken : null,
                 'n' => (int) $countText,
->>>>>>> final_initial_branch
                 'messages' => [
                     ["role" => "user", "content" => $prompt],
                 ],
@@ -117,18 +98,13 @@ class AiContentGenerator
             }
 
         } catch (\Exception $exception) {
-<<<<<<< HEAD
-            dd($exception);
-=======
             // Log or handle error
->>>>>>> final_initial_branch
         }
 
         return $contents;
     }
 
-<<<<<<< HEAD
-=======
+
     private function getGeminiContent($prompt)
     {
         $contents = [];
@@ -222,7 +198,6 @@ class AiContentGenerator
         throw new \Exception("Invalid Api Key", "403");
     }
 
->>>>>>> final_initial_branch
     private function trimText($text)
     {
         $text = ltrim($text, "\r\n");
@@ -235,11 +210,7 @@ class AiContentGenerator
 
     private function getImageContent($prompt, $imageSize = "256")
     {
-<<<<<<< HEAD
-        $client = $this->makeClient();
-=======
         $client = $this->makeOpenAIClient();
->>>>>>> final_initial_branch
 
         $settings = getAiContentsSettingsName();
         $maxImage = !empty($settings['number_of_images_generated_per_request']) ? $settings['number_of_images_generated_per_request'] : 1;
@@ -249,11 +220,7 @@ class AiContentGenerator
         try {
             $result = $client->images()->create([
                 'prompt' => $prompt,
-<<<<<<< HEAD
-                'n' => (int)$maxImage,
-=======
                 'n' => (int) $maxImage,
->>>>>>> final_initial_branch
                 'size' => $this->makeImageSize($imageSize),
                 'response_format' => 'url',
             ]);
@@ -264,11 +231,7 @@ class AiContentGenerator
                 }
             }
         } catch (\Exception $exception) {
-<<<<<<< HEAD
-            dd($exception);
-=======
             // Log or handle error
->>>>>>> final_initial_branch
         }
 
         return $images;
@@ -285,24 +248,7 @@ class AiContentGenerator
         return $sizes[$size] ?? '256x256';
     }
 
-<<<<<<< HEAD
-    private function makeClient()
-    {
-        $settings = getAiContentsSettingsName();
-        $secretKey = !empty($settings['secret_key']) ? $settings['secret_key'] : null;
 
-        if (!empty($secretKey)) {
-            return OpenAI::factory()
-                ->withApiKey($secretKey)
-                ->make();
-
-        }
-
-        throw new \Exception("Invalid Api Key", "403");
-    }
-
-=======
->>>>>>> final_initial_branch
     private function makePrompt($data)
     {
         $prompt = null;

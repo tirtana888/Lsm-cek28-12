@@ -21,10 +21,6 @@ class AdminAuthenticate
      */
     public function handle($request, Closure $next)
     {
-<<<<<<< HEAD
-        if (auth()->check() and auth()->user()->isAdmin()) {
-
-=======
         $adminPanelUrl = getAdminPanelUrl();
         $path = $request->path();
 
@@ -33,7 +29,6 @@ class AdminAuthenticate
         }
 
         if (auth()->check() and auth()->user()->isAdmin()) {
->>>>>>> final_initial_branch
             \Session::forget('impersonated');
 
             if (auth()->user()->hasPermission('admin_notifications_list')) {
@@ -49,10 +44,7 @@ class AdminAuthenticate
             $generalSettings = getGeneralSettings();
             view()->share('generalSettings', $generalSettings);
 
-<<<<<<< HEAD
-=======
             $this->injectTypography();
->>>>>>> final_initial_branch
 
             $userLanguages = $this->getUserLanguagesLists($generalSettings);
 
@@ -106,11 +98,7 @@ class AdminAuthenticate
             return $next($request);
         }
 
-<<<<<<< HEAD
-        return redirect(getAdminPanelUrl().'/login');
-=======
         return redirect(getAdminPanelUrl() . '/login');
->>>>>>> final_initial_branch
     }
 
     public function getUserLanguagesLists($generalSettings)
@@ -147,9 +135,6 @@ class AdminAuthenticate
 
         return $userLanguages;
     }
-<<<<<<< HEAD
-=======
-
     private function injectTypography()
     {
         $typographyCss = "
@@ -160,5 +145,4 @@ class AdminAuthenticate
         ";
         view()->share('typographyCss', $typographyCss);
     }
->>>>>>> final_initial_branch
 }

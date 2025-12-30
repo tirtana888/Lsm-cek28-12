@@ -1,15 +1,8 @@
 @if(
-<<<<<<< HEAD
-    $authUser->can('admin_imports_from_csv') or
-    $authUser->can('admin_translator') or
-    $authUser->can('admin_settings')
-)
-=======
         $authUser->can('admin_imports_from_csv') or
         $authUser->can('admin_translator') or
         $authUser->can('admin_settings')
     )
->>>>>>> final_initial_branch
     <li class="menu-header">{{ trans('admin/main.settings') }}</li>
 @endif
 
@@ -17,11 +10,7 @@
 @can('admin_imports_from_csv')
     <li class="nav-item dropdown {{ (request()->is(getAdminPanelUrl('/imports*', false))) ? 'active' : '' }}">
         <a href="#" class="nav-link has-dropdown" data-toggle="dropdown">
-<<<<<<< HEAD
-            <x-iconsax-bul-import class="icons" width="24px" height="24px"/>
-=======
             <x-iconsax-bul-import class="icons" width="24px" height="24px" />
->>>>>>> final_initial_branch
             <span>{{ trans('update.bulk_imports') }}</span>
         </a>
 
@@ -47,50 +36,23 @@
 @can('admin_translator')
     <li class="nav-item {{ (request()->is(getAdminPanelUrl('/translator*', false))) ? 'active' : '' }}">
         <a href="{{ getAdminPanelUrl() }}/translator" class="nav-link">
-<<<<<<< HEAD
-            <x-iconsax-bul-translate class="icons" width="24px" height="24px"/>
-=======
             <x-iconsax-bul-translate class="icons" width="24px" height="24px" />
->>>>>>> final_initial_branch
             <span>{{ trans('update.translator') }}</span>
         </a>
     </li>
 @endcan
 
 @can('admin_settings')
-<<<<<<< HEAD
-    <li class="nav-item {{ (request()->is(getAdminPanelUrl('/licenses', false))) ? 'active' : '' }}">
-        <a href="{{ getAdminPanelUrl() }}/licenses" class="nav-link">
-        <x-iconsax-bul-key class="icons" width="24px" height="24px"/>
-            <span>Licenses</span>
-        </a>
-    </li>
-=======
     {{-- <li class="nav-item {{ (request()->is(getAdminPanelUrl('/licenses', false))) ? 'active' : '' }}">
         <a href="{{ getAdminPanelUrl() }}/licenses" class="nav-link">
             <x-iconsax-bul-key class="icons" width="24px" height="24px" />
             <span>Licenses</span>
         </a>
     </li> --}}
->>>>>>> final_initial_branch
 @endcan
 
 @can('admin_settings')
     @php
-<<<<<<< HEAD
-        $settingClass ='';
-
-        if (request()->is(getAdminPanelUrl('/settings*', false)) and
-                !(
-                    request()->is(getAdminPanelUrl('/settings/404', false)) or
-                    request()->is(getAdminPanelUrl('/settings/contact_us', false)) or
-                    request()->is(getAdminPanelUrl('/settings/footer', false)) or
-                    request()->is(getAdminPanelUrl('/settings/navbar_links', false))
-                )
-            ) {
-                $settingClass = 'active';
-            }
-=======
         $settingClass = '';
 
         if (
@@ -104,21 +66,12 @@
         ) {
             $settingClass = 'active';
         }
->>>>>>> final_initial_branch
     @endphp
 
     <li class="nav-item {{ $settingClass ?? '' }}">
         <a href="{{ getAdminPanelUrl() }}/settings" class="nav-link">
-<<<<<<< HEAD
-            <x-iconsax-bul-setting-2 class="icons" width="24px" height="24px"/>
-            <span>{{ trans('admin/main.settings') }}</span>
-        </a>
-    </li>
-@endcan()
-=======
             <x-iconsax-bul-setting-2 class="icons" width="24px" height="24px" />
             <span>{{ trans('admin/main.settings') }}</span>
         </a>
     </li>
 @endcan()
->>>>>>> final_initial_branch

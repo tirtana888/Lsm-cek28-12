@@ -1,7 +1,6 @@
 <?php
 // In-App live class
 return [
-<<<<<<< HEAD
 'agora' => 'In-app live class',
 'chat' => 'Chat',
 'record' => 'Record',
@@ -4829,7 +4828,6 @@ return [
 'meeting_packages_grid_component_title' => 'Meeting Packages Grid Cards',
 'meeting_packages_grid_component_hint' => 'Display meeting package cards in grid style',
 'secs' => 'Secs',
-=======
     'agora' => 'In-app live class',
     'chat' => 'Chat',
     'record' => 'Record',
@@ -9663,6 +9661,5 @@ return [
     'meeting_packages_grid_component_title' => 'Meeting Packages Grid Cards',
     'meeting_packages_grid_component_hint' => 'Display meeting package cards in grid style',
     'secs' => 'Secs',
->>>>>>> final_initial_branch
 
 ];

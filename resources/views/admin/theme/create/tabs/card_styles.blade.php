@@ -3,11 +3,7 @@
 
         @php
             $items = [
-<<<<<<< HEAD
-                'course' => ['grid_card_1'],
-=======
                 'course' => ['grid_card_1', 'grid_card_2'],
->>>>>>> final_initial_branch
                 'product' => ['grid_card_1'],
                 'bundle' => ['grid_card_1'],
                 'upcoming_course' => ['grid_card_1'],
@@ -27,7 +23,8 @@
                     <option value="">{{ trans('update.select_a_card_style') }}</option>
 
                     @foreach($itemCards as $cardName)
-                        <option value="{{ $cardName }}" {{ (!empty($themeContents) and !empty($themeContents['card_styles']) and !empty($themeContents['card_styles'][$itemName]) and $themeContents['card_styles'][$itemName] == $cardName) ? 'selected' : '' }}>{{ trans("update.{$cardName}") }}</option>
+                        <option value="{{ $cardName }}" {{ (!empty($themeContents) and !empty($themeContents['card_styles']) and !empty($themeContents['card_styles'][$itemName]) and $themeContents['card_styles'][$itemName] == $cardName) ? 'selected' : '' }}>
+                            {{ trans("update.{$cardName}") }}</option>
                     @endforeach
                 </select>
             </div>
