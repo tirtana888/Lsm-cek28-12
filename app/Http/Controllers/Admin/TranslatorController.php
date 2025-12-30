@@ -83,11 +83,15 @@ class TranslatorController extends Controller
             $error = "Error: " . $exception->getMessage();
         }
 
+        // Return proper HTTP status code based on success/failure
+        $httpCode = $error ? 500 : 200;
+        $message = $error ? 'Translation failed! Please check the error details.' : 'Finished translation! (go to lang/' . $language . ' folder)';
+
         return response()->json([
-            'code' => 200,
+            'code' => $httpCode,
             'error' => $error,
-            'msg' => ' - Finished translation! (go to lang/' . $language . ' folder) ',
-        ]);
+            'msg' => $message,
+        ], $httpCode);
     }
 
     private function getSelectedFilesPath($items, $folder = null)

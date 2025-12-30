@@ -1152,10 +1152,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
         Route::get('/documents/{id}/print', 'DocumentsController@print');
 
         // Sales
-        Route::get('/sales', 'SalesController@index');
-        Route::get('/sales/{id}', 'SalesController@show');
-        Route::get('/sales/export', 'SalesController@export');
-        Route::get('/sales/{id}/refund', 'SalesController@refund');
+        Route::get('/sales', 'SaleController@index');
+        Route::get('/sales/export', 'SaleController@exportExcel');
+        Route::get('/sales/{id}/invoice', 'SaleController@invoice');
+        Route::get('/sales/{id}/refund', 'SaleController@refund');
 
         // Payouts
         Route::get('/payouts', 'PayoutsController@index');
