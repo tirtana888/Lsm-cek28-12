@@ -65,6 +65,7 @@ class Kernel extends HttpKernel
         'check_maintenance' => \App\Http\Middleware\CheckMaintenance::class,
         'check_restriction' => \App\Http\Middleware\CheckRestriction::class,
         'web.auth' => \App\Http\Middleware\WebAuthenticate::class,
+        'user.not.access' => \App\Http\Middleware\UserNotAccess::class,
     ];
 
 
