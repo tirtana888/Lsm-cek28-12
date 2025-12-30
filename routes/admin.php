@@ -680,6 +680,16 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
             Route::post('/{id}/update', 'GroupController@update');
             Route::get('/{id}/delete', 'GroupController@destroy');
         });
+
+        // Become Instructors
+        Route::group(['prefix' => 'become-instructors'], function () {
+            Route::get('/instructors', 'BecomeInstructorController@index')->defaults('page', 'instructors');
+            Route::get('/organizations', 'BecomeInstructorController@index')->defaults('page', 'organizations');
+            Route::get('/{id}/reject', 'BecomeInstructorController@reject');
+            Route::get('/{id}/delete', 'BecomeInstructorController@delete');
+            Route::get('/settings', 'BecomeInstructorController@settings');
+            Route::post('/settings/store', 'SettingController@storeGeneralSettings');
+        });
     });
 
     /*
