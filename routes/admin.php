@@ -712,6 +712,30 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
         Route::post('/settings/store', 'CertificateController@storeSettings');
     });
 
+    // Quizzes
+    Route::group(['prefix' => 'quizzes'], function () {
+        Route::get('/', 'QuizController@index');
+        Route::get('/create', 'QuizController@create');
+        Route::post('/store', 'QuizController@store');
+        Route::get('/{id}/edit', 'QuizController@edit');
+        Route::post('/{id}/update', 'QuizController@update');
+        Route::get('/{id}/delete', 'QuizController@delete');
+        Route::get('/{id}/results', 'QuizResultsController@index');
+        Route::get('/export', 'QuizController@exportExcel');
+        Route::post('/{quizId}/order-items', 'QuizController@orderItems');
+    });
+
+    // Enrollments
+    Route::group(['prefix' => 'enrollments'], function () {
+        Route::get('/history', 'EnrollmentController@history');
+        Route::get('/add-student-to-class', 'EnrollmentController@addStudentToClass');
+        Route::post('/store', 'EnrollmentController@store');
+        Route::get('/{saleId}/block-access', 'EnrollmentController@blockAccess');
+        Route::get('/{saleId}/enable-access', 'EnrollmentController@enableAccess');
+        Route::get('/export', 'EnrollmentController@exportExcel');
+    });
+
+
     // Upcoming Courses
     Route::group(['prefix' => 'upcoming_courses'], function () {
         Route::get('/', 'UpcomingCoursesController@index');
