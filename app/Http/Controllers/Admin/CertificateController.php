@@ -296,19 +296,21 @@ class CertificateController extends Controller
         ]);
 
         $data = $request->all();
+        $elements = !empty($data['elements']) ? $data['elements'] : [];
+        $status = !empty($data['status']) ? $data['status'] : 'draft';
 
         if (!empty($template_id)) {
             $template = CertificateTemplate::findOrFail($template_id);
 
             $template->update([
                 'image' => $data['image'],
-                'status' => $data['status'],
+                'status' => $status,
                 'type' => $data['type'],
             ]);
         } else {
             $template = CertificateTemplate::create([
                 'image' => $data['image'],
-                'status' => $data['status'],
+                'status' => $status,
                 'type' => $data['type'],
                 'created_at' => time(),
             ]);
@@ -319,13 +321,19 @@ class CertificateController extends Controller
             'locale' => mb_strtolower($data['locale']),
         ], [
             'title' => $data['title'],
-            'body' => $data['template_contents'],
-            'elements' => json_encode($data['elements']),
+            'body' => $data['template_contents'] ?? '',
+            'elements' => json_encode($elements),
         ]);
 
         removeContentLocale();
 
-        return redirect(getAdminPanelUrl("/certificates/templates/{$template->id}/edit?locale={$data['locale']}"));
+        $toastData = [
+            'title' => trans('public.request_success'),
+            'msg' => trans('update.certificate_template_stored_successfully'),
+            'status' => 'success'
+        ];
+
+        return redirect(getAdminPanelUrl("/certificates/templates/{$template->id}/edit?locale={$data['locale']}"))->with(['toast' => $toastData]);
     }
 
     public function CertificatesTemplatePreview(Request $request)
@@ -336,9 +344,9 @@ class CertificateController extends Controller
             'pageTitle' => trans('public.certificate'),
             'image' => $request->get('image'),
             'body' => $request->get('body'),
-            'position_x' => (int)$request->get('position_x', 120),
-            'position_y' => (int)$request->get('position_y', 100),
-            'font_size' => (int)$request->get('font_size', 26),
+            'position_x' => (int) $request->get('position_x', 120),
+            'position_y' => (int) $request->get('position_y', 100),
+            'font_size' => (int) $request->get('font_size', 26),
             'text_color' => $request->get('text_color', '#e1e1e1'),
         ];
 

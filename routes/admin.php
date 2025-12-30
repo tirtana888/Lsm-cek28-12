@@ -135,18 +135,82 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
     Route::get('/landings/all', 'LandingBuilder\\LandingBuilderController@allLandingPages');
 
 
-    // Users
+    // Users CRUD & Actions
     Route::group(['prefix' => 'users'], function () {
         Route::get('/', 'UserController@index')->name('admin.users.index');
         Route::get('/create', 'UserController@create')->name('admin.users.create');
-        Route::post('/', 'UserController@store')->name('admin.users.store');
+        Route::post('/store', 'UserController@store')->name('admin.users.store');
         Route::get('/{id}', 'UserController@show')->name('admin.users.show');
         Route::get('/{id}/edit', 'UserController@edit')->name('admin.users.edit');
         Route::post('/{id}/update', 'UserController@update')->name('admin.users.update');
         Route::get('/{id}/delete', 'UserController@destroy')->name('admin.users.destroy');
+        Route::post('/{id}/update-image', 'UserController@updateImage');
+        Route::post('/{id}/financial', 'UserController@financialUpdate');
+        Route::post('/{id}/occupations', 'UserController@occupationsUpdate');
+        Route::post('/{id}/badges', 'BadgesController@badgesUpdate');
+        Route::get('/{id}/badge/{badge_id}/delete', 'BadgesController@deleteBadge');
         Route::get('/{id}/impersonate', 'UserController@impersonate');
-        Route::get('/{id}/financial', 'UserController@financial');
-        Route::post('/{id}/financial', 'UserController@updateFinancial');
+        Route::match(['get', 'post'], '/search', 'UserController@search');
+        Route::get('/excel/all', 'UserController@exportExcelAllUsers');
+        Route::get('/excel/students', 'UserController@exportExcelStudents');
+        Route::get('/excel/instructors', 'UserController@exportExcelInstructors');
+        Route::get('/excel/organizations', 'UserController@exportExcelOrganizations');
+
+        // User Badges (general)
+        Route::group(['prefix' => 'badges'], function () {
+            Route::get('/', 'BadgesController@index');
+            Route::get('/create', 'BadgesController@create');
+            Route::post('/store', 'BadgesController@store');
+            Route::get('/{id}/edit', 'BadgesController@edit');
+            Route::post('/{id}/update', 'BadgesController@update');
+            Route::get('/{id}/delete', 'BadgesController@destroy');
+        });
+
+        // Delete Account Requests
+        Route::group(['prefix' => 'delete-account-requests'], function () {
+            Route::get('/', 'DeleteAccountRequestsController@index');
+            Route::get('/{id}/confirm', 'DeleteAccountRequestsController@confirm');
+            Route::get('/{id}/delete', 'DeleteAccountRequestsController@delete');
+        });
+
+        // Login History
+        Route::group(['prefix' => 'login-history'], function () {
+            Route::get('/', 'UserLoginHistoryController@index');
+            Route::get('/export', 'UserLoginHistoryController@export');
+            Route::get('/{id}/end-session', 'UserLoginHistoryController@endSession');
+            Route::get('/{id}/delete', 'UserLoginHistoryController@delete');
+            Route::get('/user/{userId}/end-all', 'UserLoginHistoryController@endAllUserSessions');
+        });
+
+        // IP Restriction
+        Route::group(['prefix' => 'ip-restriction'], function () {
+            Route::get('/', 'UserIpRestrictionController@index');
+            Route::get('/form', 'UserIpRestrictionController@getForm');
+            Route::post('/store', 'UserIpRestrictionController@store');
+            Route::get('/{id}/edit', 'UserIpRestrictionController@edit');
+            Route::post('/{id}/update', 'UserIpRestrictionController@update');
+            Route::get('/{id}/delete', 'UserIpRestrictionController@delete');
+        });
+
+        // User Groups
+        Route::group(['prefix' => 'groups'], function () {
+            Route::get('/', 'GroupController@index');
+            Route::get('/create', 'GroupController@create');
+            Route::post('/store', 'GroupController@store');
+            Route::get('/{id}/edit', 'GroupController@edit');
+            Route::post('/{id}/update', 'GroupController@update');
+            Route::get('/{id}/delete', 'GroupController@destroy');
+        });
+
+        // Become Instructors
+        Route::group(['prefix' => 'become-instructors'], function () {
+            Route::get('/instructors', 'BecomeInstructorController@index')->defaults('page', 'instructors');
+            Route::get('/organizations', 'BecomeInstructorController@index')->defaults('page', 'organizations');
+            Route::get('/{id}/reject', 'BecomeInstructorController@reject');
+            Route::get('/{id}/delete', 'BecomeInstructorController@delete');
+            Route::get('/settings', 'BecomeInstructorController@settings');
+            Route::post('/settings/store', 'SettingController@storeGeneralSettings');
+        });
     });
 
     // Staffs/Admins
@@ -188,6 +252,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
         Route::get('/{id}/approve', 'WebinarController@approve');
         Route::get('/{id}/reject', 'WebinarController@reject');
         Route::get('/{id}/unpublish', 'WebinarController@unpublish');
+        Route::match(['get', 'post'], '/search', 'WebinarController@search');
     });
 
     // Course Personal Notes
@@ -343,6 +408,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
     // Blog
     Route::group(['prefix' => 'blog'], function () {
         Route::get('/', 'BlogController@index')->name('admin.blog.index');
+        Route::match(['get', 'post'], '/search', 'BlogController@search');
         Route::get('/create', 'BlogController@create');
         Route::post('/', 'BlogController@store');
         Route::get('/{id}/edit', 'BlogController@edit');
@@ -492,6 +558,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
     // Bundles
     Route::group(['prefix' => 'bundles'], function () {
         Route::get('/', 'BundleController@index');
+        Route::match(['get', 'post'], '/search', 'BundleController@search');
         Route::get('/create', 'BundleController@create');
         Route::post('/', 'BundleController@store');
         Route::get('/{id}/edit', 'BundleController@edit');
@@ -499,11 +566,30 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
         Route::get('/{id}/delete', 'BundleController@destroy');
     });
 
-    // Forums
+    // Forums CRUD
     Route::group(['prefix' => 'forums'], function () {
-        Route::get('/', 'ForumsController@index');
-        Route::get('/topics', 'ForumsTopicController@index');
-        Route::get('/posts', 'ForumsTopicPostController@index');
+        Route::get('/', 'ForumController@index');
+        Route::get('/create', 'ForumController@create');
+        Route::post('/store', 'ForumController@store');
+        Route::get('/{id}/edit', 'ForumController@edit');
+        Route::post('/{id}/update', 'ForumController@update');
+        Route::get('/{id}/delete', 'ForumController@destroy');
+        Route::match(['get', 'post'], '/search', 'ForumController@search');
+        Route::match(['get', 'post'], '/search-topics', 'ForumController@searchTopics');
+
+        // Forum Settings
+        Route::get('/settings', 'ForumSettingsController@index');
+        Route::post('/settings/store', 'ForumSettingsController@store');
+
+        // Forum Topics
+        Route::get('/topics', 'ForumTopicsController@index');
+        Route::get('/topics/{id}/delete', 'ForumTopicsController@destroy');
+        Route::get('/topics/{id}/close', 'ForumTopicsController@close');
+        Route::get('/topics/{id}/open', 'ForumTopicsController@open');
+        Route::get('/topics/{id}/pin', 'ForumTopicsController@pin');
+        Route::get('/topics/{id}/unpin', 'ForumTopicsController@unpin');
+        Route::get('/topics/posts', 'ForumTopicsController@posts');
+        Route::get('/topics/posts/{id}/delete', 'ForumTopicsController@deletePost');
     });
 
     // Assignments
@@ -601,16 +687,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
     |--------------------------------------------------------------------------
     */
 
-    // User Lists - different views
-    Route::get('/all-users', 'UserController@allUsers');
-    Route::get('/all-users/excel', 'UserController@exportExcelAllUsers');
-    Route::get('/staffs', 'UserController@staffs');
-    Route::get('/students', 'UserController@students');
-    Route::get('/students/excel', 'UserController@exportExcelStudents');
-    Route::get('/instructors', 'UserController@instructors');
-    Route::get('/instructors/excel', 'UserController@exportExcelInstructors');
-    Route::get('/organizations', 'UserController@organizations');
-    Route::get('/organizations/excel', 'UserController@exportExcelOrganizations');
+
 
 
     // Users CRUD & Actions
@@ -626,7 +703,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
         Route::post('/{id}/badges', 'UserController@badgesUpdate');
         Route::get('/{id}/badge/{badge_id}/delete', 'UserController@deleteBadge');
         Route::get('/{id}/impersonate', 'UserController@impersonate');
-        Route::get('/search', 'UserController@search');
+        Route::match(['get', 'post'], '/search', 'UserController@search');
         Route::get('/excel/all', 'UserController@exportExcelAllUsers');
         Route::get('/excel/students', 'UserController@exportExcelStudents');
         Route::get('/excel/instructors', 'UserController@exportExcelInstructors');
@@ -743,6 +820,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
     Route::group(['prefix' => 'upcoming_courses'], function () {
         Route::get('/', 'UpcomingCoursesController@index');
         Route::get('/new', 'UpcomingCoursesController@create');
+        Route::match(['get', 'post'], '/search', 'UpcomingCoursesController@search');
         Route::post('/store', 'UpcomingCoursesController@store');
         Route::get('/{id}/edit', 'UpcomingCoursesController@edit');
         Route::post('/{id}/update', 'UpcomingCoursesController@update');
@@ -753,7 +831,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
         Route::get('/excel', 'UpcomingCoursesController@exportExcel');
         Route::get('/{id}/followers', 'UpcomingCoursesController@followers');
         Route::get('/{upcomingId}/followers/{followId}/delete', 'UpcomingCoursesController@deleteFollow');
-        Route::get('/search', 'UpcomingCoursesController@search');
+        Route::match(['get', 'post'], '/search', 'UpcomingCoursesController@search');
     });
 
     // Events
@@ -766,7 +844,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
         Route::get('/{id}/delete', 'EventsController@delete');
         Route::get('/{id}/{status}', 'EventsController@changeStatus')->where('status', 'approve|reject|unpublish');
         Route::get('/excel', 'EventsController@exportExcel');
-        Route::get('/search', 'EventsController@search');
+        Route::match(['get', 'post'], '/search', 'EventsController@search');
         Route::get('/{id}/notificationToStudents', 'EventsController@notificationToStudents');
         Route::post('/{id}/sendNotificationToStudents', 'EventsController@sendNotificationToStudents');
 
@@ -850,37 +928,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
         Route::get('/answers/{answerId}/delete', 'CourseForumsControllers@destroyAnswer');
     });
 
-    /*
-    |--------------------------------------------------------------------------
-    | Forum Section Routes (Added for full functionality)
-    |--------------------------------------------------------------------------
-    */
 
-    // Forums CRUD
-    Route::group(['prefix' => 'forums'], function () {
-        Route::get('/', 'ForumController@index');
-        Route::get('/create', 'ForumController@create');
-        Route::post('/store', 'ForumController@store');
-        Route::get('/{id}/edit', 'ForumController@edit');
-        Route::post('/{id}/update', 'ForumController@update');
-        Route::get('/{id}/delete', 'ForumController@destroy');
-        Route::get('/search', 'ForumController@search');
-        Route::get('/search-topics', 'ForumController@searchTopics');
-
-        // Forum Settings
-        Route::get('/settings', 'ForumSettingsController@index');
-        Route::post('/settings/store', 'ForumSettingsController@store');
-
-        // Forum Topics
-        Route::get('/topics', 'ForumTopicsController@index');
-        Route::get('/topics/{id}/delete', 'ForumTopicsController@destroy');
-        Route::get('/topics/{id}/close', 'ForumTopicsController@close');
-        Route::get('/topics/{id}/open', 'ForumTopicsController@open');
-        Route::get('/topics/{id}/pin', 'ForumTopicsController@pin');
-        Route::get('/topics/{id}/unpin', 'ForumTopicsController@unpin');
-        Route::get('/topics/posts', 'ForumTopicsController@posts');
-        Route::get('/topics/posts/{id}/delete', 'ForumTopicsController@deletePost');
-    });
 
     // Featured Topics
     Route::group(['prefix' => 'featured-topics'], function () {
@@ -1019,6 +1067,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
         Route::get('/products/{id}/edit', 'Store\ProductsController@edit');
         Route::post('/products/{id}/update', 'Store\ProductsController@update');
         Route::get('/products/{id}/delete', 'Store\ProductsController@destroy');
+        Route::match(['get', 'post'], '/products/search', 'Store\ProductsController@search');
         Route::get('/in-house-products', 'Store\ProductsController@inHouseProducts');
         Route::get('/orders', 'Store\OrdersController@index');
         Route::get('/orders/{id}', 'Store\OrdersController@show');
@@ -1031,6 +1080,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
         Route::get('/categories/{id}/edit', 'Store\CategoriesController@edit');
         Route::post('/categories/{id}/update', 'Store\CategoriesController@update');
         Route::get('/categories/{id}/delete', 'Store\CategoriesController@destroy');
+        Route::match(['get', 'post'], '/categories/search', 'Store\CategoriesController@search');
         Route::get('/filters', 'Store\FiltersController@index');
         Route::get('/filters/create', 'Store\FiltersController@create');
         Route::post('/filters/store', 'Store\FiltersController@store');
@@ -1054,23 +1104,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
         Route::post('/settings/store', 'Store\SettingsController@store');
     });
 
-    // Blog
-    Route::group(['prefix' => 'blog'], function () {
-        Route::get('/', 'BlogController@index');
-        Route::get('/create', 'BlogController@create');
-        Route::post('/store', 'BlogController@store');
-        Route::get('/{id}/edit', 'BlogController@edit');
-        Route::post('/{id}/update', 'BlogController@update');
-        Route::get('/{id}/delete', 'BlogController@destroy');
-        Route::get('/categories', 'BlogCategoriesController@index');
-        Route::get('/categories/create', 'BlogCategoriesController@create');
-        Route::post('/categories/store', 'BlogCategoriesController@store');
-        Route::get('/categories/{id}/edit', 'BlogCategoriesController@edit');
-        Route::post('/categories/{id}/update', 'BlogCategoriesController@update');
-        Route::get('/categories/{id}/delete', 'BlogCategoriesController@destroy');
-        Route::get('/featured-categories', 'BlogFeaturedCategoriesController@index');
-        Route::get('/featured-contents', 'BlogFeaturedContentsController@index');
-    });
+
 
     // Pages
     Route::group(['prefix' => 'pages'], function () {
@@ -1449,6 +1483,12 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
         Route::get('/{id}/toggleStatus', 'PaymentChannelController@toggleStatus');
     });
 
+
+    // Meeting Packages
+    Route::group(['prefix' => 'meeting-packages'], function () {
+        Route::get('/', 'MeetingPackagesController@index');
+        Route::match(['get', 'post'], '/search', 'MeetingPackagesController@search');
+    });
 
     // Catch-all for any other admin routes - uses controller for route caching
     Route::any('{any}', 'DashboardController@notFound')->where('any', '.*');
