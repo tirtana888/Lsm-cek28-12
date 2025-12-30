@@ -776,6 +776,17 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
         Route::get('/sold-tickets/excel', 'EventSoldTicketsController@exportExcel');
     });
 
+    // Assignments
+    Route::group(['prefix' => 'assignments'], function () {
+        Route::get('/', 'AssignmentController@index');
+        Route::get('/{id}/students', 'AssignmentController@students');
+        Route::get('/{id}/history/{historyId}/conversations', 'AssignmentController@conversations');
+        Route::post('/store', 'AssignmentController@store');
+        Route::get('/{id}/edit', 'AssignmentController@edit');
+        Route::post('/{id}/update', 'AssignmentController@update');
+        Route::get('/{id}/delete', 'AssignmentController@destroy');
+    });
+
     // Agora History
     Route::group(['prefix' => 'agora_history'], function () {
         Route::get('/', 'AgoraHistoryController@index');
@@ -830,10 +841,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
 
     // Course Forum
     Route::group(['prefix' => 'webinars/course_forums'], function () {
-        Route::get('/', 'CourseForumController@index');
-        Route::get('/{id}/answers', 'CourseForumController@answers');
-        Route::get('/{id}/delete', 'CourseForumController@destroy');
-        Route::get('/answers/{answerId}/delete', 'CourseForumController@destroyAnswer');
+        Route::get('/', 'CourseForumsControllers@index');
+        Route::get('/{id}/answers', 'CourseForumsControllers@answers');
+        Route::get('/{id}/delete', 'CourseForumsControllers@destroy');
+        Route::get('/answers/{answerId}/delete', 'CourseForumsControllers@destroyAnswer');
     });
 
     /*
