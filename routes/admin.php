@@ -549,13 +549,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['web
         Route::get('/settings', 'RewardPointsController@settings');
     });
 
-    // Become Instructor
-    Route::group(['prefix' => 'become-instructors'], function () {
-        Route::get('/', 'BecomeInstructorController@index');
-        Route::get('/{id}/reject', 'BecomeInstructorController@reject');
-        Route::get('/{id}/accept', 'BecomeInstructorController@accept');
-    });
-
 
 
     /*
