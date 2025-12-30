@@ -211,8 +211,15 @@
     {{-- Course Summary --}}
     <h3 class="font-14 font-weight-bold mt-24 mb-16">{{ trans('update.course_summary') }}</h3>
 
+
     <div class="form-group bg-white-editor">
-        <label class="form-group-label is-required">{{ trans('public.summary') }}</label>
+        <div class="d-flex align-items-center justify-content-between mb-2">
+            <label class="form-group-label is-required mb-0">{{ trans('public.summary') }}</label>
+            <button type="button" class="btn btn-primary btn-sm js-generate-ai" data-type="summary" data-field="summary">
+                <i class="fa fa-magic"></i>
+                {{ trans('update.generate_with_ai') }}
+            </button>
+        </div>
         <textarea name="summary" rows="5" class="form-control @error('summary')  is-invalid @enderror" placeholder="{{ trans('update.course_summary_placeholder') }}">{!! (!empty($webinar) and !empty($webinar->translate($locale))) ? $webinar->translate($locale)->summary : old('summary')  !!}</textarea>
         @error('summary')
         <div class="invalid-feedback">
