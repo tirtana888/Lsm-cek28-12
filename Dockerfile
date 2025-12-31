@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y \
     supervisor \
     curl \
     git \
+    dos2unix \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
@@ -64,11 +65,13 @@ RUN COMPOSER_ALLOW_SUPERUSER=1 composer dump-autoload --optimize --no-dev || tru
 # Create directories
 RUN mkdir -p /run/nginx /var/log/nginx
 
-# Copy PHP-FPM config
+# Copy PHP-FPM config and fix line endings
 COPY docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
+RUN dos2unix /usr/local/etc/php-fpm.d/www.conf
 
-# Copy nginx config
+# Copy nginx config and fix line endings
 COPY docker/nginx/conf.d/default.conf /etc/nginx/sites-available/default
+RUN dos2unix /etc/nginx/sites-available/default
 
 # Create supervisor config
 RUN mkdir -p /etc/supervisor/conf.d
@@ -85,9 +88,9 @@ RUN chown -R www-data:www-data /var/www \
     && touch /var/www/storage/logs/laravel.log \
     && chown -R www-data:www-data /var/www/storage
 
-# Copy startup script
+# Copy startup script and fix line endings
 COPY docker/start.sh /usr/local/bin/start.sh
-RUN chmod +x /usr/local/bin/start.sh
+RUN dos2unix /usr/local/bin/start.sh && chmod +x /usr/local/bin/start.sh
 
 # Expose port 80
 EXPOSE 80

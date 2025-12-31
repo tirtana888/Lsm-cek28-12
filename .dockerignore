@@ -1,25 +1,59 @@
+# Dependencies (installed during build)
 vendor/
 node_modules/
+
+# Git
 .git/
+.gitignore
+.gitattributes
+
+# Environment files (use Coolify env vars instead)
 .env
-.env.backup
-.phpunit.result.cache
-Homestead.json
-Homestead.yaml
-npm-debug.log
-yarn-error.log
-storage/logs/*
-storage/framework/cache/*
-storage/framework/sessions/*
-storage/framework/views/*
-!storage/framework/cache/.gitignore
-!storage/framework/sessions/.gitignore
-!storage/framework/views/.gitignore
-!storage/logs/.gitignore
+.env.*
+!.env.example
+
+# IDE & Editor
 .idea/
 .vscode/
 *.swp
 *.swo
 *~
+
+# OS files
 .DS_Store
 Thumbs.db
+
+# Laravel storage (will be created at runtime)
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/app/public/*
+!storage/framework/cache/.gitignore
+!storage/framework/sessions/.gitignore
+!storage/framework/views/.gitignore
+!storage/logs/.gitignore
+
+# Large upload directories (should use external storage)
+public/store/*
+public/uploads/*
+public/images/uploads/*
+
+# Test files
+.phpunit.result.cache
+tests/
+phpunit.xml
+
+# Misc
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+*.exe
+*.pdf
+Testsprite/
+testsprite_tests/
+
+# Documentation (not needed in container)
+*.md
+!README.md
