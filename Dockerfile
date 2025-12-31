@@ -1,4 +1,4 @@
-FROM php:8.1-fpm
+FROM php:8.4-fpm
 
 # Install system dependencies including git (required by composer)
 RUN apt-get update && apt-get install -y \
@@ -26,8 +26,8 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
 # Install ionCube Loader (for glibc/Debian)
 RUN curl -o ioncube.tar.gz https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz \
     && tar -xvzf ioncube.tar.gz \
-    && cp ioncube/ioncube_loader_lin_8.1.so $(php -r "echo ini_get('extension_dir');")/ \
-    && echo "zend_extension=ioncube_loader_lin_8.1.so" > /usr/local/etc/php/conf.d/00-ioncube.ini \
+    && cp ioncube/ioncube_loader_lin_8.4.so $(php -r "echo ini_get('extension_dir');")/ \
+    && echo "zend_extension=ioncube_loader_lin_8.4.so" > /usr/local/etc/php/conf.d/00-ioncube.ini \
     && rm -rf ioncube.tar.gz ioncube
 
 # Install Composer
