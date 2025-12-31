@@ -1,10 +1,11 @@
 FROM php:8.1-fpm
 
-# Install system dependencies
+# Install system dependencies including git (required by composer)
 RUN apt-get update && apt-get install -y \
     nginx \
     supervisor \
     curl \
+    git \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
@@ -28,6 +29,38 @@ RUN curl -o ioncube.tar.gz https://downloads.ioncube.com/loader_downloads/ioncub
     && echo "zend_extension=ioncube_loader_lin_8.1.so" > /usr/local/etc/php/conf.d/00-ioncube.ini \
     && rm -rf ioncube.tar.gz ioncube
 
+# Install Composer
+COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
+
+# Set working directory
+WORKDIR /var/www
+
+# Copy application code
+COPY . /var/www
+
+# Install PHP dependencies with fallback
+# Try normal install first, if it fails, try with --no-scripts
+RUN COMPOSER_ALLOW_SUPERUSER=1 \
+    COMPOSER_MEMORY_LIMIT=-1 \
+    composer install \
+    --no-dev \
+    --prefer-dist \
+    --no-interaction \
+    --ignore-platform-reqs \
+    --verbose \
+    || COMPOSER_ALLOW_SUPERUSER=1 \
+    COMPOSER_MEMORY_LIMIT=-1 \
+    composer install \
+    --no-dev \
+    --prefer-dist \
+    --no-scripts \
+    --no-interaction \
+    --ignore-platform-reqs \
+    --verbose
+
+# Generate optimized autoloader
+RUN COMPOSER_ALLOW_SUPERUSER=1 composer dump-autoload --optimize --no-dev || true
+
 # Create directories
 RUN mkdir -p /run/nginx /var/log/nginx
 
@@ -40,19 +73,7 @@ COPY docker/nginx/conf.d/default.conf /etc/nginx/sites-available/default
 
 # Create supervisor config
 RUN mkdir -p /etc/supervisor/conf.d
-RUN echo "[supervisord]\nnodaemon=true\nuser=root\n\n[program:nginx]\ncommand=nginx -g 'daemon off;'\nautostart=true\nautorestart=true\nstdout_logfile=/dev/stdout\nstdout_logfile_maxbytes=0\nstderr_logfile=/dev/stderr\nstderr_logfile_maxbytes=0\n\n[program:php-fpm]\ncommand=php-fpm -F\nautostart=true\nautorestart=true\nstdout_logfile=/dev/stdout\nstdout_logfile_maxbytes=0\nstderr_logfile=/dev/stderr\nstderr_logfile_maxbytes=0" > /etc/supervisor/conf.d/app.conf
-
-# Copy application code
-COPY . /var/www
-
-# Set working directory
-WORKDIR /var/www
-
-# Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Install PHP dependencies (skip scripts that require Laravel to boot)
-RUN COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs --no-scripts
+RUN echo "[supervisord]\nnodaemon=true\nuser=root\n\n[program:nginx]\ncommand=nginx -g 'daemon off;'\nautostart=true\nautorestart=true\nstdout_logfile=/dev/stdout\nstdout_logfile_maxbytes=0\nstderr_logfile=/dev/stderr\nstderr_logfile_maxbytes=0\n\n[program:php-fpm]\ncommand=php -d variables_order=EGPCS /usr/local/sbin/php-fpm -F\nautostart=true\nautorestart=true\nstdout_logfile=/dev/stdout\nstdout_logfile_maxbytes=0\nstderr_logfile=/dev/stderr\nstderr_logfile_maxbytes=0" > /etc/supervisor/conf.d/app.conf
 
 # Set permissions and create required directories/files
 RUN chown -R www-data:www-data /var/www \
@@ -62,7 +83,7 @@ RUN chown -R www-data:www-data /var/www \
     && mkdir -p /var/www/storage/framework/sessions \
     && mkdir -p /var/www/storage/framework/views \
     && mkdir -p /var/www/storage/logs \
-    && echo "<?php // Cache bootstrap placeholder" > /var/www/storage/framework/cache/cache-bootstrap.php \
+    && touch /var/www/storage/logs/laravel.log \
     && chown -R www-data:www-data /var/www/storage
 
 # Expose port 80
