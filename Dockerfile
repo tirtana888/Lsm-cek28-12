@@ -78,15 +78,23 @@ RUN echo "[supervisord]\nnodaemon=true\nuser=root\n\n[program:nginx]\ncommand=ng
 RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage \
     && chmod -R 755 /var/www/bootstrap/cache \
-    && mkdir -p /var/www/storage/framework/cache \
+    && mkdir -p /var/www/storage/framework/cache/data \
     && mkdir -p /var/www/storage/framework/sessions \
     && mkdir -p /var/www/storage/framework/views \
     && mkdir -p /var/www/storage/logs \
     && touch /var/www/storage/logs/laravel.log \
     && chown -R www-data:www-data /var/www/storage
 
+# Copy startup script
+COPY docker/start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
+
 # Expose port 80
 EXPOSE 80
 
-# Start supervisor
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
+    CMD curl -f http://localhost/ || exit 1
+
+# Start application using startup script
+CMD ["/usr/local/bin/start.sh"]
