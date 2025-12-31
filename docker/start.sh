@@ -33,6 +33,8 @@ fi
 
 echo "✅ Laravel ready!"
 
+
 # Start supervisor to run nginx and php-fpm
 echo "🚀 Starting web services..."
-exec /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
+exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+

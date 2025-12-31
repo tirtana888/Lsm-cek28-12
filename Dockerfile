@@ -80,9 +80,10 @@ RUN dos2unix /usr/local/etc/php-fpm.d/www.conf && \
     dos2unix /usr/local/bin/start.sh && \
     chmod +x /usr/local/bin/start.sh
 
-# Create supervisor config
+# Create supervisor config directory and copy config
 RUN mkdir -p /etc/supervisor/conf.d
-RUN echo "[supervisord]\nnodaemon=true\nuser=root\n\n[program:nginx]\ncommand=nginx -g 'daemon off;'\nautostart=true\nautorestart=true\nstdout_logfile=/dev/stdout\nstdout_logfile_maxbytes=0\nstderr_logfile=/dev/stderr\nstderr_logfile_maxbytes=0\n\n[program:php-fpm]\ncommand=php -d variables_order=EGPCS /usr/local/sbin/php-fpm -F\nautostart=true\nautorestart=true\nstdout_logfile=/dev/stdout\nstdout_logfile_maxbytes=0\nstderr_logfile=/dev/stderr\nstderr_logfile_maxbytes=0" > /etc/supervisor/conf.d/app.conf
+COPY docker/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+RUN dos2unix /etc/supervisor/conf.d/supervisord.conf
 
 # Set permissions and create required directories/files
 RUN chown -R www-data:www-data /var/www \
