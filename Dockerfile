@@ -39,8 +39,11 @@ WORKDIR /var/www
 # Copy application code
 COPY . /var/www
 
+# Ensure vendor is deleted (in case .dockerignore didn't work)
+RUN rm -rf /var/www/vendor /var/www/composer.lock
+
 # Install PHP dependencies with fallback
-# Try normal install first, if it fails, try with --no-scripts
+# This will generate platform_check.php with PHP 8.1
 RUN COMPOSER_ALLOW_SUPERUSER=1 \
     COMPOSER_MEMORY_LIMIT=-1 \
     composer install \
