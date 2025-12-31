@@ -66,7 +66,6 @@ RUN mkdir -p /run/nginx /var/log/nginx
 
 # Copy PHP-FPM config
 COPY docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
-COPY docker/php/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 
 # Copy nginx config
 COPY docker/nginx/conf.d/default.conf /etc/nginx/sites-available/default
