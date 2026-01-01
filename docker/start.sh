@@ -11,6 +11,11 @@ mkdir -p /var/www/storage/framework/views
 mkdir -p /var/www/storage/logs
 mkdir -p /var/www/bootstrap/cache
 
+# Create cache-bootstrap.php if it doesn't exist (required by public/index.php)
+if [ ! -f /var/www/storage/framework/cache/cache-bootstrap.php ]; then
+    echo "<?php // Laravel Cache Bootstrap" > /var/www/storage/framework/cache/cache-bootstrap.php
+fi
+
 # Set permissions
 echo "🔐 Setting permissions..."
 chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
