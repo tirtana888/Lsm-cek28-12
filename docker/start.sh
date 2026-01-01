@@ -1,6 +1,12 @@
 #!/bin/bash
 set -e
 
+# Set JWT_SECRET fallback if not provided by environment
+if [ -z "$JWT_SECRET" ]; then
+    export JWT_SECRET="MJcHXtRp1LPq0Zz9vJyXZyz2NBXHpLa4Xc8g6OIGbOmQyWm8AnGiBcsW8lOPScKg"
+    echo "⚠️ JWT_SECRET not set, using fallback value"
+fi
+
 echo "🚀 Starting Laravel application..."
 
 # Ensure storage directories exist and have correct permissions
